@@ -1,0 +1,24 @@
+{
+  "name": "odin-project-1.4-todo",
+  "version": "1.0.0",
+  "description": "This is the fourth project of the Odin Project's Javascript curriculum.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/at-a-minimum1/at-a-minimum1-odin-project-1.4-todo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/at-a-minimum1/at-a-minimum1-odin-project-1.4-todo/issues"
+  },
+  "homepage": "https://github.com/at-a-minimum1/at-a-minimum1-odin-project-1.4-todo#readme",
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<link rel="stylesheet" href="styles.css" />
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>ToDo List</title>
 	</head>
 	<body>
+		<script src="main.js"></script>
 		<header></header>
-		<div class="controlPanel"></div>
+		<div class="desktop_wrapper">
+			<div class="controlPanel">
+				<div class="header_wrapper">
+					<h2>Terrific TODO!</h2>
+				</div>
+				<div class="input_wrapper">
+					<label for="title">Title</label>
+					<input type="text" id="title"></input>
+					<label for="priority">Priority</label>
+					<input type="text" id="priority"></input>
+					<label for="dueDate">Date Due</label>
+					<input type="text" id="dueDate"></input>
+				</div>
+				<div class="buttonWrapper">
+					<button id="addItem">Add</button>
+					<button id="removeItem">Remove</button>
+				</div>
+			</div>
+			<div class="results_panel">Results go here</div>
+		</div>
 		<footer></footer>
 	</body>
 </html>

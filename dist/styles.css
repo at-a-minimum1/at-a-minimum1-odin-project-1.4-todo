@@ -1,0 +1,28 @@
+/* Utility Class */
+
+.desktop_wrapper {
+	display: flex;
+}
+.controlPanel {
+	border: solid;
+	border-color: red;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.input_wrapper {
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	align-items: center;
+	width: 20vw;
+	background-color: aquamarine;
+	border: solid;
+	border-color: yellow;
+}
+.results_panel {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	background-color: tomato;
+}

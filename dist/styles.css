@@ -1,28 +1,36 @@
+* {
+	/* background-color: #ebfeff; */
+	padding: 0;
+	margin: 0;
+}
 /* Utility Class */
 
 .desktop_wrapper {
-	display: flex;
+	display: grid;
+	grid-template-columns: 20vw 80vw;
 }
-.controlPanel {
-	border: solid;
-	border-color: red;
+.header_wrapper {
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	grid-column: span 2;
+	background-color: #8bcde1;
+	height: 116px;
 }
+/* .input_wrapper * {
+	background-color: #062e5c;
+} */
 .input_wrapper {
 	display: flex;
 	flex-flow: column wrap;
 	justify-content: center;
 	align-items: center;
-	width: 20vw;
-	background-color: aquamarine;
-	border: solid;
-	border-color: yellow;
+	background-color: #062e5c;
+	color: white;
 }
 .results_panel {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	background-color: tomato;
+	background-color: #ebfeff;
+	height: 83vh;
 }

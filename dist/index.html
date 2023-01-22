@@ -9,12 +9,12 @@
 	</head>
 	<body>
 		<script src="main.js"></script>
-		<header></header>
+		<header class="header_wrapper">
+				<h2>Terrific TODO!</h2>
+		</header>
 		<div class="desktop_wrapper">
 			<div class="controlPanel">
-				<div class="header_wrapper">
-					<h2>Terrific TODO!</h2>
-				</div>
+				
 				<div class="input_wrapper">
 					<label for="title">Title</label>
 					<input type="text" id="title"></input>
@@ -22,11 +22,12 @@
 					<input type="text" id="priority"></input>
 					<label for="dueDate">Date Due</label>
 					<input type="text" id="dueDate"></input>
+					<div class="buttonWrapper">
+						<button id="addItem">Add</button>
+						<button id="removeItem">Remove</button>
+					</div>
 				</div>
-				<div class="buttonWrapper">
-					<button id="addItem">Add</button>
-					<button id="removeItem">Remove</button>
-				</div>
+				
 			</div>
 			<div class="results_panel">Results go here</div>
 		</div>

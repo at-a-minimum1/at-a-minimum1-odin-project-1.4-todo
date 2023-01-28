@@ -10,3 +10,12 @@ export function addCard(id, card) {
 	const target = document.getElementById(id);
 	target.appendChild(card);
 }
+
+export function clearForm(){
+	let title = document.getElementById("title");
+	let priority = document.getElementById("priorityDropDown");
+	let date = document.getElementById("dueDate");
+
+	title.value = "";
+	date.value = "2021-06-01";
+}

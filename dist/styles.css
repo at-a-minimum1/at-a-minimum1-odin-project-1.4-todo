@@ -10,7 +10,6 @@ body {
 
 /* Elements */
 custom-card {
-	/* display: flex; */
 	display: grid;
 	grid-template-columns: 40px 1fr 0.5fr;
 	background-color: white;

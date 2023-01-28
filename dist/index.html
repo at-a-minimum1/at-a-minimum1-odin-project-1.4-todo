@@ -9,7 +9,6 @@
 	</head>
 	<body>
 		<script src="main.js"></script>
-		<script src="../src/modules/items/card.js"></script>
 	
 		<header class="header_wrapper">
 				<h2>TERRIFIC TODO!</h2>
@@ -21,30 +20,26 @@
 					<div class="form_wrapper">
 						<label for="title">Title</label>
 						<input type="text" id="title" value="Sample Task"></input>
-						<label for="priority">Priority</label>
-						<select name="" id="">
+						<label for="priorityDropdown">Priority</label>
+						<select name="" id="priorityDropdown">
 							Priority
-							<option value="priority-high">High</option>
-							<option value="priority-medium" selected>Normal</option>
-							<option value="priority-low">Low</option>
+							<option value="priorityHigh">High</option>
+							<option value="priorityMedium" selected>Normal</option>
+							<option value="priorityLow">Low</option>
 					</select>
-						<label for="dueDate">Date Due</label>
+						<label for="dueDate">Due Date</label>
 						<input type="date" id="dueDate" value="2050-07-02"></input>
 					</div>
 
 					<div class="button_wrapper">
-						<button id="addItem" onsubmit="">+ Add Task</button>
+						<button id="addItem">+ Add Task</button>
+
 					</div>
 				</div>
 				
 			</div>
-			<div class="results_panel">
-				<custom-card></custom-card>
-				<custom-card></custom-card>
-				<custom-card></custom-card>
-				<custom-card></custom-card>
-				<custom-card></custom-card>
-				<custom-card></custom-card>
+			<div class="results_panel" id="resultsPanel">
+				
 			</div>
 		</div>
 			

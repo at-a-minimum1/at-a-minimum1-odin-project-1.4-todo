@@ -1,5 +1,5 @@
-class Card extends HTMLElement {
-	constructor() {
+export class Card extends HTMLElement {
+	constructor(...args) {
 		super();
 		this.attachShadow({ mode: "open" });
 		let checkBox = document.createElement("input");
@@ -7,8 +7,8 @@ class Card extends HTMLElement {
 		let date = document.createElement("h4");
 
 		checkBox.setAttribute("type", "checkbox");
-		title.textContent = "Sample Task";
-		date.textContent = "07/02/2050";
+		title.textContent = args[0];
+		date.textContent = args[1];
 
 		this.shadowRoot.appendChild(checkBox);
 		this.shadowRoot.appendChild(title);

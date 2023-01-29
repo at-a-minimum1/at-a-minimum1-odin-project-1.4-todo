@@ -58,7 +58,9 @@ button:hover {
 .translate_y_40 {
 	transform: translateY(40px);
 }
-
+.strike_through {
+	text-decoration: line-through;
+}
 /* Wrappers */
 
 .form_wrapper {

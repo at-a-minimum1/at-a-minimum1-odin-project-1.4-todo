@@ -12,4 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		domControl.clearForm();
 	});
+	document.getElementById("checkbox").addEventListener("click", () => {
+		console.log("Checkbox");
+	});
 });

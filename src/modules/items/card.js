@@ -7,6 +7,7 @@ export class Card extends HTMLElement {
 		let date = document.createElement("h4");
 
 		checkBox.setAttribute("type", "checkbox");
+
 		title.textContent = args[0];
 		date.textContent = args[1];
 

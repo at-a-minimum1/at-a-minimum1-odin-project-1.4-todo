@@ -11,8 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		console.log(title + " & " + date);
 
 		domControl.clearForm();
+		console.log(card.getTitle());
 	});
-	document.getElementById("checkbox").addEventListener("click", () => {
-		console.log("Checkbox");
-	});
+
+	// document.getElementById("inputID").addEventListener("click", () => {
+	// 	console.log("Checkbox");
+	// 	// console.log(card.getTitle());
+	// 	// console.log(card.getDate());
+	// });
 });

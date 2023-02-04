@@ -17,7 +17,7 @@ export function clearForm() {
 	let date = document.getElementById("dueDate");
 	// title.value = "";
 	title.value = "-No Title-";
-	date.value = "2024-16-01";
+	date.value = "2024-06-11";
 }
 
 export function strikeThrough(card) {

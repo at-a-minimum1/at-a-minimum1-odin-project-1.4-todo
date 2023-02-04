@@ -4,6 +4,7 @@
 	border: unset;
 	font: unset;
 }
+
 body {
 	height: 100%;
 }
@@ -23,13 +24,32 @@ custom-card {
 	box-shadow: 0 4px 2px 0 #5a6161;
 }
 
+/* .custom-checkbox {
+	position: absolute;
+	opacity: 0;
+}
+.checker-container {
+	cursor: pointer;
+	background-color: #062e5c;
+	position: absolute;
+	opacity: 0;
+	z-index: -1;
+} */
+/* .checker {
+	position: absolute;
+	opacity: 0;
+	background-color: red;
+} */
+
 h2 {
 	font-size: 40px;
 }
+
 button {
 	width: 100%;
 	background-color: #57a4ff;
 }
+
 button {
 	color: black;
 	margin-top: 3rem;
@@ -37,18 +57,20 @@ button {
 	padding-bottom: 0.5rem;
 	box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.5);
 }
-input {
+
+/* input {
 	justify-content: center;
 	border-radius: 7px;
 	box-shadow: inset 0px 4px 4px 2px rgb(136, 136, 136);
 	padding-left: 0.5rem;
 	font-size: medium;
 	height: auto;
-}
+} */
 button:active {
 	box-shadow: inset -1px 1.5px 0.5px 0px rgba(0, 0, 0, 0.5);
 	width: 99%;
 }
+
 button:hover {
 	background-color: #2e8cff;
 	cursor: pointer;
@@ -58,9 +80,11 @@ button:hover {
 .translate_y_40 {
 	transform: translateY(40px);
 }
+
 .strike_through {
 	text-decoration: line-through;
 }
+
 /* Wrappers */
 
 .form_wrapper {
@@ -79,6 +103,7 @@ button:hover {
 	grid-template-columns: 20vw 80vw;
 	height: 88vh;
 }
+
 .header_wrapper {
 	display: flex;
 	justify-content: center;
@@ -96,6 +121,7 @@ button:hover {
 	background-color: #062e5c;
 	color: white;
 }
+
 .input_wrapper > * {
 	transform: translateY(80px);
 }
@@ -105,4 +131,8 @@ button:hover {
 	padding-right: 54px;
 	padding-top: 30px;
 	background-color: #ebfeff;
+}
+
+.strike_through {
+	text-decoration: line-through;
 }

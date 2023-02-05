@@ -1,4 +1,6 @@
-class itemList {
+import "item.js";
+
+export class itemList {
 	constructor(itemList) {
 		this.itemList = itemList || [];
 	}

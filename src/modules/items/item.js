@@ -1,9 +1,10 @@
-class item {
-	constructor(title, description, date, type) {
-		this.title = title;
-		this.date = date;
-		this.type = type;
-		this.description = description;
+export class Item {
+	constructor(...args) {
+		this.title = args[0];
+		this.date = args[1];
+		this.type = args[2];
+		this.description = args[3];
+		this.priority = args[4];
 	}
 	set title(title) {
 		this.title = title;
@@ -24,5 +25,12 @@ class item {
 	}
 	get description() {
 		return this.description;
+	}
+
+	set priority(priority) {
+		this.priority = priority;
+	}
+	get priority() {
+		return this.priority;
 	}
 }

@@ -1,4 +1,5 @@
 import { Card } from "../items/card";
+// import { item, item } from "../items/item";
 
 export function addCard(id, card) {
 	if (card == null) {
@@ -11,11 +12,14 @@ export function addCard(id, card) {
 	target.appendChild(card);
 }
 
+// export function addItem() {
+// 	const item = new item();
+// }
+
 export function clearForm() {
 	let title = document.getElementById("title");
 	let priority = document.getElementById("priorityDropDown");
 	let date = document.getElementById("dueDate");
-	// title.value = "";
 	title.value = "-No Title-";
 	date.value = "2024-06-11";
 }

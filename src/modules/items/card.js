@@ -1,12 +1,66 @@
-// @collapse
-// import "input.css";
+// @collappse
+// import itemList from "./itemList.js";
+
+import { Item } from "./item.js";
 
 export class Card extends HTMLElement {
 	constructor(...args) {
-		super();
+		super(...args);
+
 		this.attachShadow({ mode: "open" });
-		this.shadowRoot.innerHTML = `
-			<style>
+		const title = document.createElement("h4");
+		let date = document.createElement("h4");
+		title.classList.add("card-title");
+		date.classList.add("date");
+		title.textContent = args[0];
+		date.textContent = args[1];
+
+		this.shadowRoot.innerHTML = this.cardStyle();
+
+		// CODEPEN STUFF
+		// https://codepen.io/at-a-minimum1/pen/mdjaNog
+		// Created Elements
+		const input = document.createElement("input");
+		const checkmark = document.createElement("span");
+		const container = document.createElement("label");
+		input.setAttribute("type", "checkbox");
+
+		input.classList.add("inputs");
+		checkmark.classList.add("checkmark");
+		container.classList.add("container");
+
+		container.appendChild(input);
+		container.appendChild(checkmark);
+
+		// END OF CODEPEN
+		const lineThrough = () => {
+			title.classList.toggle("strike-through");
+		};
+		input.addEventListener("click", lineThrough);
+
+		// Appending the elements
+		this.shadowRoot.appendChild(container);
+		this.shadowRoot.appendChild(title);
+		this.shadowRoot.appendChild(date);
+	}
+
+	//
+	// Getters and setters
+	//
+	getTitle() {
+		return this.titleText;
+	}
+	setTitle(title) {
+		this.title.textContent = title;
+	}
+	getDate() {
+		return this.date;
+	}
+	setDate(date) {
+		this.date = date;
+	}
+	cardStyle() {
+		return `<style>
 			
 			custom-card {
 				display: grid;
@@ -73,62 +127,6 @@ export class Card extends HTMLElement {
 				text-decoration: line-through;
 			}
 			</style> `;
-
-		const title = document.createElement("h4");
-		let date = document.createElement("h4");
-		title.classList.add("card-title");
-		date.classList.add("date");
-
-		title.textContent = args[0];
-		date.textContent = args[1];
-
-		// CODEPEN STUFF
-		// https://codepen.io/at-a-minimum1/pen/mdjaNog
-		// Created Elements
-		const input = document.createElement("input");
-		const checkmark = document.createElement("span");
-		const container = document.createElement("label");
-		input.setAttribute("type", "checkbox");
-
-		input.classList.add("inputs");
-		checkmark.classList.add("checkmark");
-		container.classList.add("container");
-
-		container.appendChild(input);
-		container.appendChild(checkmark);
-
-		// END OF CODEPEN
-		const lineThrough = () => {
-			title.classList.toggle("strike-through");
-		};
-		input.addEventListener("click", lineThrough);
-
-		// Appending the elements
-		this.shadowRoot.appendChild(container);
-		this.shadowRoot.appendChild(title);
-		this.shadowRoot.appendChild(date);
-		// function toggleStrikeThrough() {
-		// 	this.title.classList.toggle("strike-through");
-		// }
-	}
-
-	//
-	// Getters and setters
-	//
-	getTitle() {
-		// return toString(this.title.textContent);
-		// let titles = "Hello World.";
-		return this.titleText;
-		// return titles;
-	}
-	setTitle(title) {
-		this.title.textContent = title;
-	}
-	getDate() {
-		return this.date;
-	}
-	setDate(date) {
-		this.date = date;
 	}
 }
 

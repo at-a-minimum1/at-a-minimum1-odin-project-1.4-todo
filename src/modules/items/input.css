@@ -39,4 +39,10 @@
 /* When the checkbox is checked, add a blue background */
 .container input:checked~.checkmark {
     background-color: #2196f3;
+    display: flex;
+    flex-direction: column;
 }
+
+    .delete-btn {
+        height: fit-content;
+    }

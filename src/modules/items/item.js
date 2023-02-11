@@ -5,32 +5,38 @@ export class Item {
 		this.type = args[2];
 		this.description = args[3];
 		this.priority = args[4];
+
+		// setTitle(args[0]);
+		// setDate(args[1]);
+		// setType(args[2]);
+		// setDescription(args[3]);
+		// setPriority(args[4]);
 	}
-	set title(title) {
-		this.title = title;
+	set setTitle(title) {
+		title = this.title;
 	}
-	get title() {
+	get getTitle() {
 		return this.title;
 	}
 
-	set date(date) {
+	set setTitle(date) {
 		this.date = date;
 	}
-	get date() {
+	get getDate() {
 		return this.date;
 	}
 
-	set description(description) {
+	set setDescription(description) {
 		this.description = description;
 	}
-	get description() {
+	get getDescription() {
 		return this.description;
 	}
 
-	set priority(priority) {
+	set setPriority(priority) {
 		this.priority = priority;
 	}
-	get priority() {
+	get getPriority() {
 		return this.priority;
 	}
 }

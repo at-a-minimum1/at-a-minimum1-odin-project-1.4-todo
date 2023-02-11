@@ -2,23 +2,33 @@
 // import itemList from "./itemList.js";
 
 import { Item } from "./item.js";
+import { removeCard } from "../dom/domControl.js";
 
 export class Card extends HTMLElement {
 	constructor(...args) {
 		super(...args);
 
 		this.attachShadow({ mode: "open" });
+		const dateWrapper = document.createElement("div");
 		const title = document.createElement("h4");
-		let date = document.createElement("h4");
+		const date = document.createElement("h4");
+		const deleteBtn = document.createElement("button");
 		title.classList.add("card-title");
 		date.classList.add("date");
+		dateWrapper.classList.add("date-wrapper");
+		deleteBtn.classList.add("delete-btn");
+		// deleteBtn.addEventListener("click", removeCard());
+		// document.addEventListener("DOMContentLoaded", () => {
+		// 	deleteBtn.addEventListener("click", this.deleteCard());
+		// });
+
+		// TODO I need to update this to make sure it's receiving the values from the item it's referencing.I'm going to use getters from the item to instantiate the title, date, priority, etc
 		title.textContent = args[0];
 		date.textContent = args[1];
+		deleteBtn.textContent = "DELETE";
 
 		this.shadowRoot.innerHTML = this.cardStyle();
 
-		// CODEPEN STUFF
-		// https://codepen.io/at-a-minimum1/pen/mdjaNog
 		// Created Elements
 		const input = document.createElement("input");
 		const checkmark = document.createElement("span");
@@ -31,6 +41,8 @@ export class Card extends HTMLElement {
 
 		container.appendChild(input);
 		container.appendChild(checkmark);
+		dateWrapper.appendChild(date);
+		dateWrapper.appendChild(deleteBtn);
 
 		// END OF CODEPEN
 		const lineThrough = () => {
@@ -41,7 +53,14 @@ export class Card extends HTMLElement {
 		// Appending the elements
 		this.shadowRoot.appendChild(container);
 		this.shadowRoot.appendChild(title);
-		this.shadowRoot.appendChild(date);
+		this.shadowRoot.appendChild(dateWrapper);
+	}
+
+	// Modifiers
+	deleteCard() {
+		console.log("Delete button pressed " + this.title.textContent);
+		this.title.textContent = "DELETED";
+		// this.setTitle("DELETED");
 	}
 
 	//
@@ -74,6 +93,17 @@ export class Card extends HTMLElement {
 				margin-top: 15px;
 				margin-bottom: 20px;
 				box-shadow: 0 4px 2px 0 #5a6161;
+			}
+
+			.date-wrapper{
+				display: flex;
+				flex-direction: row;
+				align-items; center;
+				justify-content: center;
+			}
+		
+			.delete-btn {
+				height: fit-content;
 			}
 
 			.container {

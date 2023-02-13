@@ -28,8 +28,11 @@ export function strikeThrough(card) {
 	this.card.classlist.toggle("strike_through");
 }
 
-export function updateDOM() {
-	// placeholder
+export function updateDOM(itemArray) {
+	for (item in itemArray) {
+		// let cards = new Card(new Card(item.getTitle, item.getDate));
+		addCard("resultPanel", new Card(item.getTitle, item.getDate));
+	}
 }
 
 // clearDOM(id){

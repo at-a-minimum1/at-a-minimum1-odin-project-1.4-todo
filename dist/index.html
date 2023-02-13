@@ -9,43 +9,64 @@
 	</head>
 	<body>
 		<script src="main.js"></script>
-	
+
+		<div class="modal_wrapper hide" id="modalWrapper">
+			<div class="modal_panel" id="taskModal">
+		
+				<div class="button_wrapper">
+					<button class="close-button" id="closeModal">x</button>
+				</div>
+				<div class="form_wrapper">
+					<label for="title">Title</label>
+					<input type="text" id="title" value="Sample Task"></input>
+					<label for="priorityDropdown">Priority</label>
+					<select name="" id="priorityDropdown">
+						Priority
+						<option value="priorityHigh">High</option>
+						<option value="priorityMedium" selected>Normal</option>
+						<option value="priorityLow">Low</option>
+					</select>
+					<label for="dueDate">Due Date</label>
+					<input type="date" id="dueDate" value="2050-07-02"></input>
+
+					<button id="addItem">+ Add Task</button>
+				</div>
+			</div>
+		</div>
+
 		<header class="header_wrapper">
-				<h2>TERRIFIC TODO!</h2>
+			<h2>TERRIFIC TODO!</h2>
 		</header>
 		<div class="desktop_wrapper">
-			<div class="controlPanel">
-				
+			<div class="control_panel">
 				<div class="input_wrapper">
-					<div class="form_wrapper">
-						<label for="title">Title</label>
-						<input type="text" id="title" value="Sample Task"></input>
-						<label for="priorityDropdown">Priority</label>
-						<select name="" id="priorityDropdown">
-							Priority
-							<option value="priorityHigh">High</option>
-							<option value="priorityMedium" selected>Normal</option>
-							<option value="priorityLow">Low</option>
-					</select>
-						<label for="dueDate">Due Date</label>
-						<input type="date" id="dueDate" value="2050-07-02"></input>
+					<div class="task_wrapper">
+						<ul>
+							-All Tasks
+							<li>Today</li>
+							<li>Next Week</li>
+							<li>Important</li>
+						</ul>
+						<button id="addTask">+ Add Task</button>
 					</div>
-
-					<div class="button_wrapper">
-						<button id="addItem">+ Add Task</button>
-
+					<div class="project_wrapper">
+						<ul>
+							-Project 1
+							<li>Task one</li>
+							<li>Task two</li>
+							<li>Task three</li>
+						</ul>
+						<!-- Button should open a dialogue box -->
+						<button id="addProject">+ Add Project</button>
 					</div>
 				</div>
-				
 			</div>
 			<div class="results_panel" id="resultsPanel">
 				<!-- Custom-card goes here -->
-				<!-- <custom-card></custom-card> -->
 
 				<!-- Advice: "I suggest using npm scripts instead of npx. You'll later learn to set up different npm scripts for different things!" -->
 			</div>
 		</div>
-			
-		<footer></footer>
+
 	</body>
 </html>

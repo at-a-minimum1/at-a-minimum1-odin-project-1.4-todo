@@ -5,12 +5,6 @@ export class Item {
 		this.type = args[2];
 		this.description = args[3];
 		this.priority = args[4];
-
-		// setTitle(args[0]);
-		// setDate(args[1]);
-		// setType(args[2]);
-		// setDescription(args[3]);
-		// setPriority(args[4]);
 	}
 	set setTitle(title) {
 		title = this.title;

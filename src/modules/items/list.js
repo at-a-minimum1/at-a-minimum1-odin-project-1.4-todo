@@ -15,10 +15,11 @@ export class List {
 	}
 	removeFromList(item) {
 		let indexToRemove = this.list.indexOf(item);
-		if (indexToRemove >= 0) {
-			this.list.splice(indexToRemove, 1);
-		} else {
-			throw new console.error("item not found");
-		}
+		// if (indexToRemove >= 0) {
+		this.list.splice(indexToRemove, 1);
+		// } else {
+		// throw new console.error("item not found");
+		console.log("item not found");
+		// }
 	}
 }

@@ -19,7 +19,7 @@ export class Card extends HTMLElement {
 		deleteBtn.classList.add("delete-btn");
 		// deleteBtn.addEventListener("click", removeCard());
 		// document.addEventListener("DOMContentLoaded", () => {
-		// 	deleteBtn.addEventListener("click", this.deleteCard());
+		// deleteBtn.addEventListener("click", this.deleteCard());
 		// });
 
 		// TODO I need to update this to make sure it's receiving the values from the item it's referencing.I'm going to use getters from the item to instantiate the title, date, priority, etc
@@ -59,7 +59,7 @@ export class Card extends HTMLElement {
 	// Modifiers
 	deleteCard() {
 		console.log("Delete button pressed " + this.title.textContent);
-		this.title.textContent = "DELETED";
+		// this.title.textContent = "DELETED";
 		// this.setTitle("DELETED");
 	}
 

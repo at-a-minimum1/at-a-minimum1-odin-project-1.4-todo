@@ -16,27 +16,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		domControl.addCard("resultsPanel", card);
 		itemList.addToList(item);
+		cardList.addToList(card);
 
 		domControl.clearForm();
 
 		console.log(item);
+		console.log(cardList);
 		console.log(itemList);
 	});
+	// document.getElementById("removeItem").addEventListener("click", () => {
+	// 	let removeThis = cardList[1];
+	// 	cardList.removeFromList(removeThis);
+	// });
+	const modalWrapper = document.getElementById("modalWrapper");
+	const addProject = document.getElementById("addProject");
+	const addTask = document.getElementById("addTask");
+	const taskModal = document.getElementById("taskModal");
+
+	addProject.addEventListener("click", () => {});
+	addTask.addEventListener("click", () => {
+		// const taskModal = document.getElementById("taskModalWrapper");
+		modalWrapper.classList.toggle("hide");
+	});
+
+	modalWrapper.addEventListener("click", (event) => {
+		if (event.target === modalWrapper) {
+			modalWrapper.classList.toggle("hide");
+		}
+	});
+
+	document.getElementById("closeModal").addEventListener("click", () => {
+		modalWrapper.classList.toggle("hide");
+	});
 });
-
-// let items = [{title: "Item 1", value: "Value 1"},
-//              {title: "Item 2", value: "Value 2"},
-//              {title: "Item 3", value: "Value 3"}];
-
-// // sort the items array by title
-// items.sort((a, b) => (a.title > b.title) ? 1 : -1);
-
-// // update the DOM elements to reflect the new order
-// let cardContainer = document.querySelector("#card-container");
-// cardContainer.innerHTML = "";
-// for (let item of items) {
-//   let card = document.createElement("custom-card");
-//   card.setAttribute("title", item.title);
-//   card.setAttribute("value", item.value);
-//   cardContainer.appendChild(card);
-// }

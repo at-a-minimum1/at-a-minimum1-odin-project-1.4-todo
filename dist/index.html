@@ -10,11 +10,12 @@
 	<body>
 		<script src="main.js"></script>
 
-		<div class="modal_wrapper hide" id="modalWrapper">
+		<!-- Task modal -->
+		<div class="modal_wrapper hide" id="modalWrapperTask">
 			<div class="modal_panel" id="taskModal">
 		
 				<div class="button_wrapper">
-					<button class="close-button" id="closeModal">x</button>
+					<button class="close-button" id="closeModalTask">x</button>
 				</div>
 				<div class="form_wrapper">
 					<label for="title">Title</label>
@@ -30,6 +31,23 @@
 					<input type="date" id="dueDate" value="2050-07-02"></input>
 
 					<button id="addItem">+ Add Task</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- Project modal -->
+		<div class="modal_wrapper hide" id="modalWrapperProject">
+			<div class="modal_panel" id="projectModal">
+		
+				<div class="button_wrapper">
+					<button class="close-button" id="closeModalProject">x</button>
+				</div>
+				<div class="form_wrapper">
+					<label for="projectName">Project Name</label>
+					<input type="text" id="projectName" value="Sample Project"></input>
+					
+		
+					<button>+ Add Project</button>
 				</div>
 			</div>
 		</div>
@@ -62,6 +80,7 @@
 				</div>
 			</div>
 			<div class="results_panel" id="resultsPanel">
+				<h3 class="category_wrapper" id="categoryWrapper"> &nbsp; -All Tasks</h3>
 				<!-- Custom-card goes here -->
 
 				<!-- Advice: "I suggest using npm scripts instead of npx. You'll later learn to set up different npm scripts for different things!" -->

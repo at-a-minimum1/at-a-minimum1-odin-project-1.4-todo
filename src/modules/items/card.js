@@ -25,7 +25,7 @@ export class Card extends HTMLElement {
 		// TODO I need to update this to make sure it's receiving the values from the item it's referencing.I'm going to use getters from the item to instantiate the title, date, priority, etc
 		title.textContent = args[0];
 		date.textContent = args[1];
-		deleteBtn.textContent = "DELETE";
+		deleteBtn.innerHTML = `&darr;`;
 
 		this.shadowRoot.innerHTML = this.cardStyle();
 

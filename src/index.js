@@ -28,24 +28,38 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 	let removeThis = cardList[1];
 	// 	cardList.removeFromList(removeThis);
 	// });
-	const modalWrapper = document.getElementById("modalWrapper");
+	const taskModalWrapper = document.getElementById("modalWrapperTask");
+	const projectModalWrapper = document.getElementById("modalWrapperProject");
+
 	const addProject = document.getElementById("addProject");
 	const addTask = document.getElementById("addTask");
 	const taskModal = document.getElementById("taskModal");
 
-	addProject.addEventListener("click", () => {});
+	// Pulls up the modal panel for adding projects
+	addProject.addEventListener("click", () => {
+		projectModalWrapper.classList.toggle("hide");
+	});
+	// Brings up the modal panel for adding tasks
 	addTask.addEventListener("click", () => {
 		// const taskModal = document.getElementById("taskModalWrapper");
-		modalWrapper.classList.toggle("hide");
+		taskModalWrapper.classList.toggle("hide");
 	});
 
-	modalWrapper.addEventListener("click", (event) => {
-		if (event.target === modalWrapper) {
-			modalWrapper.classList.toggle("hide");
+	taskModalWrapper.addEventListener("click", (event) => {
+		if (event.target === taskModalWrapper) {
+			taskModalWrapper.classList.toggle("hide");
+		}
+	});
+	projectModalWrapper.addEventListener("click", (event) => {
+		if (event.target === projectModalWrapper) {
+			projectModalWrapper.classList.toggle("hide");
 		}
 	});
 
-	document.getElementById("closeModal").addEventListener("click", () => {
-		modalWrapper.classList.toggle("hide");
+	document.getElementById("closeModalTask").addEventListener("click", () => {
+		taskModalWrapper.classList.toggle("hide");
+	});
+	document.getElementById("closeModalProject").addEventListener("click", () => {
+		projectModalWrapper.classList.toggle("hide");
 	});
 });

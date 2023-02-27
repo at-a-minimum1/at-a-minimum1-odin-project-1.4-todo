@@ -25,7 +25,13 @@ export function clearForm() {
 }
 
 export function strikeThrough(card) {
-	this.card.classlist.toggle("strike_through");
+	this.card.classList.toggle("strike_through");
+}
+
+export function expand(card) {
+	// Access the child of the card element and unhide it.
+	let cardDetails = card.querySelector(".cardDetails");
+	cardDetails.classList.toggle("show");
 }
 
 export function updateDOM(itemArray) {

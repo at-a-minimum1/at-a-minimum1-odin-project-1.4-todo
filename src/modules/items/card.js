@@ -9,31 +9,36 @@ export class Card extends HTMLElement {
 		super(...args);
 
 		this.attachShadow({ mode: "open" });
+		const expandWrapper = document.createElement("div");
 		const dateWrapper = document.createElement("div");
 		const title = document.createElement("h4");
 		const date = document.createElement("h4");
-		const deleteBtn = document.createElement("button");
+		const expandButton = document.createElement("button");
+		const cardDetailsWrapper = document.createElement("div");
+		const cardDetails = document.createElement("div");
+		const input = document.createElement("input");
+		const checkmark = document.createElement("span");
+		const container = document.createElement("label");
+
+		input.setAttribute("type", "checkbox");
+
+		// Pull this out and make it a method
 		title.classList.add("card-title");
 		date.classList.add("date");
 		dateWrapper.classList.add("date-wrapper");
-		deleteBtn.classList.add("delete-btn");
-		// deleteBtn.addEventListener("click", removeCard());
-		// document.addEventListener("DOMContentLoaded", () => {
-		// deleteBtn.addEventListener("click", this.deleteCard());
-		// });
+		expandButton.classList.add("expand-btn");
+		expandWrapper.classList.add("expand-wrapper");
+		// cardDetailsWrapper.classList.add("card_details_wrapper", "hideDetails");
+		cardDetailsWrapper.classList.add("card_details_wrapper");
+		cardDetails.classList.add("card_details");
 
 		// TODO I need to update this to make sure it's receiving the values from the item it's referencing.I'm going to use getters from the item to instantiate the title, date, priority, etc
 		title.textContent = args[0];
 		date.textContent = args[1];
-		deleteBtn.innerHTML = `&darr;`;
-
+		expandButton.innerHTML = `&darr;`;
+		cardDetails.textContent = "Card Expanded";
+		cardDetailsWrapper.textContent = "Wrapper here";
 		this.shadowRoot.innerHTML = this.cardStyle();
-
-		// Created Elements
-		const input = document.createElement("input");
-		const checkmark = document.createElement("span");
-		const container = document.createElement("label");
-		input.setAttribute("type", "checkbox");
 
 		input.classList.add("inputs");
 		checkmark.classList.add("checkmark");
@@ -42,30 +47,36 @@ export class Card extends HTMLElement {
 		container.appendChild(input);
 		container.appendChild(checkmark);
 		dateWrapper.appendChild(date);
-		dateWrapper.appendChild(deleteBtn);
+		expandWrapper.appendChild(expandButton);
 
-		// END OF CODEPEN
+		cardDetailsWrapper.appendChild(cardDetails);
+
 		const lineThrough = () => {
 			title.classList.toggle("strike-through");
 		};
 		input.addEventListener("click", lineThrough);
+		const expand = () => {
+			// Expand the card
+			this.classList.toggle("expanded");
+			// cardDetailsWrapper.classList.toggle("hideDetails");
+			// cardDetailsWrapper.classList.toggle("show");
+			// this.style.height = "200px";
+			console.log("Expand button pressed");
+		};
+		expandButton.addEventListener("click", expand);
 
+		// container.appendChild(cardDetailsWrapper);
 		// Appending the elements
+		container.appendChild(cardDetailsWrapper);
 		this.shadowRoot.appendChild(container);
 		this.shadowRoot.appendChild(title);
 		this.shadowRoot.appendChild(dateWrapper);
+		this.shadowRoot.appendChild(expandWrapper);
+		this.shadowRoot.appendChild(cardDetailsWrapper);
 	}
 
 	// Modifiers
-	deleteCard() {
-		console.log("Delete button pressed " + this.title.textContent);
-		// this.title.textContent = "DELETED";
-		// this.setTitle("DELETED");
-	}
 
-	//
-	// Getters and setters
-	//
 	getTitle() {
 		return this.titleText;
 	}
@@ -80,32 +91,12 @@ export class Card extends HTMLElement {
 	}
 	cardStyle() {
 		return `<style>
-			
-			custom-card {
-				display: grid;
-				grid-template-columns: 40px 1fr 0.5fr;
-				background-color: white;
-				width: 100%;
-				height: 70px;
-				justify-content: center;
-				align-items: center;
-				position: relative;
-				margin-top: 15px;
-				margin-bottom: 20px;
-				box-shadow: 0 4px 2px 0 #5a6161;
-			}
-
-			.date-wrapper{
-				display: flex;
-				flex-direction: row;
-				align-items; center;
-				justify-content: center;
-			}
-		
-			.delete-btn {
+			.expand-btn {
 				height: fit-content;
 			}
-
+			.expanded{
+				height: 200px;
+			}
 			.container {
 				display: block;
 				position: relative;
@@ -118,6 +109,45 @@ export class Card extends HTMLElement {
 				-ms-user-select: none;
 				user-select: none;
 				transform: translate(10px, -30px);
+			}
+
+			.show {
+				display: block;
+				height: 200px;
+			}
+
+			.hideDetails {
+				/* display: none !important; */
+				display: none;
+				transition: height 0.5s ease;
+			}
+
+			.card_details_wrapper {
+				display: none;
+				height: 0;
+				grid-column-start: span 4;
+				background-color: white;
+				width: 100%;
+				height: 200px;
+				justify-content: center;
+				align-items: center;
+				position: relative;
+				transform: translateY(-22px);
+				box-shadow: 0 1px 1px 0 #5a6161;
+
+				/* margin-top: 15px; */
+				/* margin-bottom: 20px; */
+				/* box-shadow: 0 4px 2px 0 #5a6161; */
+			}
+			.card_details_wrapper {
+  				transition: height 0.5s ease;
+			}
+			.card_details {
+				background-color: white;
+				width: 100%;
+				justify-content: center;
+				align-items: center;
+				position: relative;
 			}
 
 			/* Hide the browser's default checkbox */
@@ -161,3 +191,15 @@ export class Card extends HTMLElement {
 }
 
 customElements.define("custom-card", Card);
+
+// display: grid;
+// 	grid-template-columns: 70px 1fr 0.5fr 40px;
+// 	background-color: white;
+// 	width: 100%;
+// 	height: 70px;
+// 	justify-content: center;
+// 	align-items: center;
+// 	position: relative;
+// 	margin-top: 15px;
+// 	margin-bottom: 20px;
+// 	box-shadow: 0 4px 2px 0 #5a6161;

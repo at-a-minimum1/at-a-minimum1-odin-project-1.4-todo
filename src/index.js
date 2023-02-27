@@ -41,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 	// Brings up the modal panel for adding tasks
 	addTask.addEventListener("click", () => {
-		// const taskModal = document.getElementById("taskModalWrapper");
 		taskModalWrapper.classList.toggle("hide");
 	});
 

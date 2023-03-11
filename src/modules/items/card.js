@@ -5,74 +5,148 @@ import { Item } from "./item.js";
 import { removeCard } from "../dom/domControl.js";
 
 export class Card extends HTMLElement {
-	constructor(...args) {
-		super(...args);
-
+	constructor(item) {
+		super();
 		this.attachShadow({ mode: "open" });
-		const expandWrapper = document.createElement("div");
-		const dateWrapper = document.createElement("div");
-		const title = document.createElement("h4");
-		const date = document.createElement("h4");
-		const expandButton = document.createElement("button");
-		const cardDetailsWrapper = document.createElement("div");
-		const cardDetails = document.createElement("div");
-		const input = document.createElement("input");
+
+		// this.item = item;
+		const itemTitle = "item.getTitle()";
+		const itemDate = "item.getDate()";
+		const itemPriority = "item.getPriority()";
+		const itemDescription = "item.getDescription()";
+
+		this.classList.add("collapsible-card");
+
+		// Outside wrappers and classes in them
+		const leftWrap = document.createElement("div");
+		const centerWrap = document.createElement("div");
+		const rightWrap = document.createElement("div");
+		const formActionWrapper = document.createElement("div");
+		leftWrap.classList.add("left-wrapper", "priority-high");
+		centerWrap.classList.add("center-wrapper");
+		rightWrap.classList.add("right-wrapper");
+		formActionWrapper.classList.add("form-action-wrapper", "priority-high");
+
+		// Elements in leftWrap and classes in them
+		const inputWrap = document.createElement("div");
+		inputWrap.classList.add("input-wrapper");
+		const labelContainer = document.createElement("label");
+		labelContainer.classList.add("container");
+		const checkbox = document.createElement("input");
 		const checkmark = document.createElement("span");
-		const container = document.createElement("label");
+		checkbox.setAttribute("type", "checkbox");
+		inputWrap.append(labelContainer, checkbox, checkmark);
+		leftWrap.append(inputWrap);
 
-		input.setAttribute("type", "checkbox");
+		// Elements in centerWrap and classes in them
+		const header = document.createElement("div");
+		header.classList.add("collapsible-header");
+		const titleWrap = document.createElement("div");
+		titleWrap.classList.add("collapsible-title");
+		const taskTitle = document.createElement("h3");
+		taskTitle.textContent = "Title";
+		header.append(titleWrap);
+		titleWrap.append(taskTitle);
+		const content = document.createElement("div");
+		content.classList.add("collapsible-content", "hide");
+		const formWrap = document.createElement("div");
+		formWrap.classList.add("form_wrapper");
 
-		// Pull this out and make it a method
-		title.classList.add("card-title");
-		date.classList.add("date");
-		dateWrapper.classList.add("date-wrapper");
-		expandButton.classList.add("expand-btn");
-		expandWrapper.classList.add("expand-wrapper");
-		// cardDetailsWrapper.classList.add("card_details_wrapper", "hideDetails");
-		cardDetailsWrapper.classList.add("card_details_wrapper");
-		cardDetails.classList.add("card_details");
+		// Form elements go here
+		const title = document.createElement("label");
+		title.setAttribute("for", "title");
+		title.textContent = "Title";
+		const inputTitle = document.createElement("input");
+		inputTitle.setAttribute("type", "text");
+		inputTitle.value = "Sample Task";
+		const priority = document.createElement("label");
+		priority.setAttribute("for", "priorityDropdown");
+		priority.textContent = "Priority";
+		const selectPriority = document.createElement("select");
+		selectPriority.setAttribute("id", "priorityDropdown");
+		selectPriority.textContent = "Priority";
+		// Create the High priority option
+		const priorityHigh = document.createElement("option");
+		priorityHigh.setAttribute("value", "priorityHigh");
+		priorityHigh.textContent = "High";
+		// Create the Normal priority option (and set it as selected)
+		const priorityNormal = document.createElement("option");
+		priorityNormal.setAttribute("value", "priorityMedium");
+		priorityNormal.setAttribute("selected", "");
+		priorityNormal.textContent = "Normal";
+		// Create the Low priority option
+		const priorityLow = document.createElement("option");
+		priorityLow.setAttribute("value", "priorityLow");
+		priorityLow.textContent = "Low";
+		selectPriority.append(priorityHigh, priorityNormal, priorityLow);
+		formWrap.append(title, inputTitle, priority, selectPriority);
 
-		// TODO I need to update this to make sure it's receiving the values from the item it's referencing.I'm going to use getters from the item to instantiate the title, date, priority, etc
-		title.textContent = args[0];
-		date.textContent = args[1];
-		expandButton.innerHTML = `&darr;`;
-		cardDetails.textContent = "Card Expanded";
-		cardDetailsWrapper.textContent = "Wrapper here";
-		this.shadowRoot.innerHTML = this.cardStyle();
+		const dueDate = document.createElement("label");
+		dueDate.setAttribute("for", "dueDate");
+		dueDate.textContent = "Due Date";
+		// dueDate.textContent = item.get
+		const inputDueDate = document.createElement("input");
+		inputDueDate.setAttribute("type", "date");
+		inputDueDate.setAttribute("id", "dueDate");
+		inputDueDate.setAttribute("value", "2050-07-02");
 
-		input.classList.add("inputs");
-		checkmark.classList.add("checkmark");
-		container.classList.add("container");
+		formWrap.append(dueDate, inputDueDate);
+		content.append(formWrap);
+		centerWrap.append(header, content);
+		// Create new div element with class "date"
+		const dateDiv = document.createElement("div");
+		dateDiv.classList.add("date");
 
-		container.appendChild(input);
-		container.appendChild(checkmark);
-		dateWrapper.appendChild(date);
-		expandWrapper.appendChild(expandButton);
+		// Create new h3 element with text "Date"
+		const dateHeader = document.createElement("h3");
+		dateHeader.textContent = "Date";
 
-		cardDetailsWrapper.appendChild(cardDetails);
+		// Append the dateHeader to the dateDiv
+		dateDiv.appendChild(dateHeader);
 
-		const lineThrough = () => {
-			title.classList.toggle("strike-through");
-		};
-		input.addEventListener("click", lineThrough);
-		const expand = () => {
-			// Expand the card
-			this.classList.toggle("expanded");
-			// cardDetailsWrapper.classList.toggle("hideDetails");
-			// cardDetailsWrapper.classList.toggle("show");
-			// this.style.height = "200px";
-			console.log("Expand button pressed");
-		};
-		expandButton.addEventListener("click", expand);
+		// Create new h3 element with class "description-header hide" and text "Description:"
+		const descriptionHeader = document.createElement("h3");
+		descriptionHeader.classList.add("description-header", "hide");
+		descriptionHeader.textContent = "Description:";
 
-		// container.appendChild(cardDetailsWrapper);
-		// Appending the elements
-		container.appendChild(cardDetailsWrapper);
-		this.shadowRoot.appendChild(container);
-		this.shadowRoot.appendChild(title);
-		this.shadowRoot.appendChild(dateWrapper);
-		this.shadowRoot.appendChild(expandWrapper);
-		this.shadowRoot.appendChild(cardDetailsWrapper);
+		// Create new textarea element with class "description hide"
+		const descriptionTextarea = document.createElement("textarea");
+		descriptionTextarea.classList.add("description", "hide");
+
+		// Append the descriptionHeader and descriptionTextarea to the rightWrapper
+		rightWrap.append(dateDiv, descriptionHeader, descriptionTextarea);
+
+		// Elements in formActionWrapper and classes in them
+
+		// Create expand button
+		const expandButton = document.createElement("button");
+		expandButton.classList.add("collapsible-btn");
+		expandButton.textContent = "Expand";
+
+		// Create save-delete-wrapper element with class "hide"
+		const saveDeleteWrapper = document.createElement("div");
+		saveDeleteWrapper.classList.add("edit-delete-wrapper", "hide");
+
+		// Create save button
+		const saveButton = document.createElement("button");
+		saveButton.classList.add("edit");
+		saveButton.textContent = "Save";
+
+		// Create delete button
+		const deleteButton = document.createElement("button");
+		deleteButton.classList.add("delete");
+		deleteButton.textContent = "Delete";
+
+		// Append buttons to save-delete-wrapper element
+		saveDeleteWrapper.append(saveButton, deleteButton);
+
+		// Append elements to form-action-wrapper element
+		formActionWrapper.append(expandButton, saveDeleteWrapper);
+
+		// Append wrappers to card
+		// this.append(leftWrap, centerWrap, rightWrap, formActionWrapper);
+		// const shadowCard = this;
+		this.shadowRoot.append(leftWrap, centerWrap, rightWrap, formActionWrapper);
 	}
 
 	// Modifiers
@@ -91,100 +165,207 @@ export class Card extends HTMLElement {
 	}
 	cardStyle() {
 		return `<style>
-			.expand-btn {
-				height: fit-content;
+			.collapsible-container {
+			margin: 20px;
 			}
-			.expanded{
-				height: 200px;
+
+			h3{
+			margin: 0;
 			}
+
+			.priority-high{
+			background-color: red; 
+			}
+
+			.collapsible-card{
+			display: grid;
+			grid-template-columns: 100px 1fr 0.5fr 100px;
+			background-color: #fff;
+			border-radius: 4px;
+			box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+			margin-bottom: 20px;
+			}
+			.border{
+				border: solid red;
+			
+			}
+
+
+			/* .collapsible-card { */
+			/*   display: grid; */
+			/*   grid-template-columns: 1fr 1fr; */
+			/*   background-color: #fff;
+			border-radius: 4px;
+			box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+			margin-bottom: 20px; */
+			/* } */
+
+			.collapsible-header {
+			
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 10px;
+			
+			/*   cursor: pointer; */
+			}
+
+			.collapsible-title {
+			display: grid;
+			grid-template-columns: 80px 1fr 120px;
+			margin: 0;
+			}
+
+			.collapsible-btn {
+			border: none;
+			background-color: transparent;
+			font-size: 16px;
+			cursor: pointer;
+			display: flex;
+			align-content: flex-end;
+			justify-content: flex-end;
+			width: 100%;
+			padding: 10px;
+			}
+
+			.edit{
+			border: none;
+			background-color: transparent;
+			font-size: 16px;
+			cursor: pointer;
+			display: flex;
+			align-content: flex-end;
+			justify-content: flex-end;
+			width: 100%;
+			padding: 10px;
+			}
+
+			.delete{
+			border: none;
+			background-color: transparent;
+			font-size: 16px;
+			cursor: pointer;
+			display: flex;
+			align-content: flex-end;
+			justify-content: flex-end;
+			width: 100%;
+			padding: 10px;
+			}
+
+
+
+			.collapsible-content {
+			padding: 10px;
+			/*   transition: height 0.5s ease; */
+			transition: height;
+			overflow: hidden;
+			}
+
+			.collapsible-card.expanded .collapsible-content {
+			height: auto;
+			}
+			/* Use this for the arrow */
+			/* .collapsible-card.expanded .collapsible-btn {
+			transform: rotate(180deg);
+			} */
+
+			.collapsible-card + .collapsible-card {
+			margin-top: 20px;
+			}
+
+			.hide{
+			display: none;
+			}
+
+			/* My stuff from here */
+
+			.form_wrapper{
+			display: flex;
+			flex-direction: column;
+			}
+
+			.form-action-wrapper{
+			display: flex;
+			flex-direction: column;
+			align-content: space-between; 
+			justify-content: space-between;
+			}
+
+			.description-wrapper {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			}
+
+			.description {
+			flex-grow: 1;
+			width: 98%;
+			height: 70%;
+			box-sizing: border-box;
+			padding: 10px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			font-size: 16px;
+			line-height: 1.5;
+			resize: none;
+			}
+
+
+			/* Custom element checkmark input */
 			.container {
-				display: block;
-				position: relative;
-				padding-left: 35px;
-				margin-bottom: 12px;
-				cursor: pointer;
-				font-size: 22px;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-				transform: translate(10px, -30px);
-			}
-
-			.show {
-				display: block;
-				height: 200px;
-			}
-
-			.hideDetails {
-				/* display: none !important; */
-				display: none;
-				transition: height 0.5s ease;
-			}
-
-			.card_details_wrapper {
-				display: none;
-				height: 0;
-				grid-column-start: span 4;
-				background-color: white;
-				width: 100%;
-				height: 200px;
-				justify-content: center;
-				align-items: center;
-				position: relative;
-				transform: translateY(-22px);
-				box-shadow: 0 1px 1px 0 #5a6161;
-
-				/* margin-top: 15px; */
-				/* margin-bottom: 20px; */
-				/* box-shadow: 0 4px 2px 0 #5a6161; */
-			}
-			.card_details_wrapper {
-  				transition: height 0.5s ease;
-			}
-			.card_details {
-				background-color: white;
-				width: 100%;
-				justify-content: center;
-				align-items: center;
-				position: relative;
+			display: block;
+			position: relative;
+			padding-left: 35px;
+			margin-bottom: 12px;
+			cursor: pointer;
+			font-size: 22px;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
 			}
 
 			/* Hide the browser's default checkbox */
 			.container input {
-				position: absolute;
-				opacity: 0;
-				cursor: pointer;
-				height: 0;
-				width: 0;
+			position: absolute;
+			opacity: 0;
+			cursor: pointer;
+			height: 0;
+			width: 0;
 			}
 
 			/* Create a custom checkbox */
 			.checkmark {
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 50px;
-				width: 50px;
-				border-radius: 50%;
-				background-color: #eee;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 30px;
+			width: 30px;
+			background-color: #eee;
+			border-radius: 50px;
+			transform: translateX(20px);
+			/*   transform: translateY(-3px); */
 			}
 
 			/* On mouse-over, add a grey background color */
 			.container:hover input ~ .checkmark {
-				background-color: #ccc;
+			background-color: #ccc;
 			}
 
 			/* When the checkbox is checked, add a blue background */
 			.container input:checked ~ .checkmark {
-				background-color: #2196f3;
+			background-color: #2196F3;
 			}
 
-			.card-title{
-				transform: translate(30px);
+			/* Create the checkmark/indicator (hidden when not checked) */
+			.checkmark:after {
+			content: "";
+			position: absolute;
+			display: none;
 			}
-			.strike-through{
-				text-decoration: line-through;
+
+			/* Show the checkmark when checked */
+			.container input:checked ~ .checkmark:after {
+			display: block;
 			}
 			</style> `;
 	}

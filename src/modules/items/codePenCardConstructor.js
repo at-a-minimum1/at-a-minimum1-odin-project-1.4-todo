@@ -4,6 +4,7 @@ import { removeCard } from "../dom/domControl.js";
 export class Card extends HTMLElement {
 	constructor(item) {
 		super();
+		this.attachShadow({ mode: "open" });
 
 		this.item = item;
 		const itemTitle = item.getTitle();
@@ -11,7 +12,6 @@ export class Card extends HTMLElement {
 		const itemPriority = item.getPriority();
 		const itemDescription = item.getDescription();
 
-		this.attachShadow({ mode: "open" });
 		this.classList.add("collapsible-card");
 
 		// Outside wrappers and classes in them

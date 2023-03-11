@@ -1,3 +1,4 @@
+/* @collapse */
 * {
 	padding: 0;
 	margin: 0;
@@ -82,8 +83,7 @@ li:hover {
 }
 
 .hide {
-	/* display: none !important; */
-	visibility: hidden;
+	display: none;
 }
 
 .strike_through {
@@ -245,7 +245,11 @@ li:hover {
 	box-shadow: inset 0px 1px 1px 2px rgba(0, 15, 73, 0.5);
 }
 
+/* ********************************************************************************** */
+/* ********************************************************************************** */
 /* CODEPEN Stuff */
+/* ********************************************************************************** */
+/* ********************************************************************************** */
 .collapsible-container {
 	margin: 20px;
 }
@@ -266,6 +270,7 @@ h3 {
 	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 	margin-bottom: 20px;
 }
+
 .border {
 	border: solid red;
 }
@@ -339,6 +344,7 @@ h3 {
 .collapsible-card.expanded .collapsible-content {
 	height: auto;
 }
+
 /* Use this for the arrow */
 /* .collapsible-card.expanded .collapsible-btn {
   transform: rotate(180deg);

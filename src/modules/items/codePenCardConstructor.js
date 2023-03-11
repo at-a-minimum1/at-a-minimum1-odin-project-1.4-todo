@@ -2,12 +2,6 @@ import { Item } from "./item.js";
 import { removeCard } from "../dom/domControl.js";
 
 export class Card extends HTMLElement {
-	// Method to reduce the amount of lines in the code below
-	createElement(elementType, ...classes) {
-		const element = document.createElement(elementType);
-		element.classList.add(...classes);
-		return element;
-	}
 	constructor(item) {
 		super();
 

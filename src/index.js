@@ -11,23 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		let title = document.getElementById("title").value;
 		let date = document.getElementById("dueDate").value;
 		const item = new Item(title, date);
-		const card = new Card(item.getTitle, item.getDate);
-		console.log("Title:" + item.getTitle);
+		const card = new Card(item);
 
 		domControl.addCard("resultsPanel", card);
 		itemList.addToList(item);
 		cardList.addToList(card);
 
 		domControl.clearForm();
-
-		console.log(item);
-		console.log(cardList);
-		console.log(itemList);
 	});
-	// document.getElementById("removeItem").addEventListener("click", () => {
-	// 	let removeThis = cardList[1];
-	// 	cardList.removeFromList(removeThis);
-	// });
+	
 	const taskModalWrapper = document.getElementById("modalWrapperTask");
 	const projectModalWrapper = document.getElementById("modalWrapperProject");
 

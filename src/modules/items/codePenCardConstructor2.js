@@ -29,7 +29,7 @@ export class Card extends HTMLElement {
 			"form-action-wrapper",
 			"priority-high"
 		);
-		// *************************************************
+
 		// Elements in leftWrap and classes in them
 		const inputWrap = createClassElement("div", "input_wrapper");
 		const labelContainer = createClassElement("label", "container");

@@ -50,12 +50,12 @@ li:hover {
 	box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.5);
 }
 
-button {
+.control-panel-button {
 	width: 100%;
 	background-color: #57a4ff;
 }
 
-button {
+.control-panel-button {
 	color: black;
 	margin-top: 1rem;
 	padding-top: 0.5rem;
@@ -63,11 +63,11 @@ button {
 	box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.5);
 }
 
-button:active {
+.control-panel-button:active {
 	box-shadow: inset -1px 1.5px 0.5px 0px rgba(0, 0, 0, 0.5);
 }
 
-button:hover {
+.control-panel-button:hover {
 	background-color: #2e8cff;
 	cursor: pointer;
 }
@@ -243,4 +243,202 @@ button:hover {
 
 .close-button:active {
 	box-shadow: inset 0px 1px 1px 2px rgba(0, 15, 73, 0.5);
+}
+
+/* CODEPEN Stuff */
+.collapsible-container {
+	margin: 20px;
+}
+
+h3 {
+	margin: 0;
+}
+
+.priority-high {
+	background-color: red;
+}
+
+.collapsible-card {
+	display: grid;
+	grid-template-columns: 100px 1fr 0.5fr 100px;
+	background-color: #fff;
+	border-radius: 4px;
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+	margin-bottom: 20px;
+}
+.border {
+	border: solid red;
+}
+
+/* .collapsible-card { */
+/*   display: grid; */
+/*   grid-template-columns: 1fr 1fr; */
+/*   background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px; */
+/* } */
+
+.collapsible-header {
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+
+	/*   cursor: pointer; */
+}
+
+.collapsible-title {
+	display: grid;
+	grid-template-columns: 80px 1fr 120px;
+	margin: 0;
+}
+
+.collapsible-btn {
+	border: none;
+	background-color: transparent;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	align-content: flex-end;
+	justify-content: flex-end;
+	width: 100%;
+	padding: 10px;
+}
+
+.edit {
+	border: none;
+	background-color: transparent;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	align-content: flex-end;
+	justify-content: flex-end;
+	width: 100%;
+	padding: 10px;
+}
+
+.delete {
+	border: none;
+	background-color: transparent;
+	font-size: 16px;
+	cursor: pointer;
+	display: flex;
+	align-content: flex-end;
+	justify-content: flex-end;
+	width: 100%;
+	padding: 10px;
+}
+
+.collapsible-content {
+	padding: 10px;
+	/*   transition: height 0.5s ease; */
+	transition: height;
+	overflow: hidden;
+}
+
+.collapsible-card.expanded .collapsible-content {
+	height: auto;
+}
+/* Use this for the arrow */
+/* .collapsible-card.expanded .collapsible-btn {
+  transform: rotate(180deg);
+} */
+
+.collapsible-card + .collapsible-card {
+	margin-top: 20px;
+}
+
+.hide {
+	display: none;
+}
+
+/* My stuff from here */
+
+.form_wrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-action-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-content: space-between;
+	justify-content: space-between;
+}
+
+.description-wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.description {
+	flex-grow: 1;
+	width: 98%;
+	height: 70%;
+	box-sizing: border-box;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 16px;
+	line-height: 1.5;
+	resize: none;
+}
+
+/* Custom element checkmark input */
+.container {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 30px;
+	width: 30px;
+	background-color: #eee;
+	border-radius: 50px;
+	transform: translateX(20px);
+	/*   transform: translateY(-3px); */
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+	background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+	background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+	display: block;
 }

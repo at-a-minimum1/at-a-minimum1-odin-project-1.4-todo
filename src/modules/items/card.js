@@ -1,5 +1,4 @@
-// @collappse
-// import itemList from "./itemList.js";
+// @collapse
 
 import { Item } from "./item.js";
 import { removeCard } from "../dom/domControl.js";
@@ -9,9 +8,8 @@ export class Card extends HTMLElement {
 		super();
 		this.attachShadow({ mode: "open" });
 
-		// this.item = item;
-		const itemTitle = "item.getTitle()";
-		const itemDate = "item.getDate()";
+		const itemTitle = item.title;
+		const itemDate = item.date;
 		const itemPriority = "item.getPriority()";
 		const itemDescription = "item.getDescription()";
 
@@ -44,7 +42,8 @@ export class Card extends HTMLElement {
 		const titleWrap = document.createElement("div");
 		titleWrap.classList.add("collapsible-title");
 		const taskTitle = document.createElement("h3");
-		taskTitle.textContent = "Title";
+		// taskTitle.textContent = "Title";
+		taskTitle.textContent = itemTitle;
 		header.append(titleWrap);
 		titleWrap.append(taskTitle);
 		const content = document.createElement("div");
@@ -58,7 +57,9 @@ export class Card extends HTMLElement {
 		title.textContent = "Title";
 		const inputTitle = document.createElement("input");
 		inputTitle.setAttribute("type", "text");
-		inputTitle.value = "Sample Task";
+		inputTitle.value = item.title;
+		// inputTitle.value = "Sample Task";
+
 		const priority = document.createElement("label");
 		priority.setAttribute("for", "priorityDropdown");
 		priority.textContent = "Priority";
@@ -84,7 +85,6 @@ export class Card extends HTMLElement {
 		const dueDate = document.createElement("label");
 		dueDate.setAttribute("for", "dueDate");
 		dueDate.textContent = "Due Date";
-		// dueDate.textContent = item.get
 		const inputDueDate = document.createElement("input");
 		inputDueDate.setAttribute("type", "date");
 		inputDueDate.setAttribute("id", "dueDate");
@@ -99,13 +99,14 @@ export class Card extends HTMLElement {
 
 		// Create new h3 element with text "Date"
 		const dateHeader = document.createElement("h3");
-		dateHeader.textContent = "Date";
+		// dateHeader.textContent = "Date";
+		dateHeader.textContent = item.date;
 
 		// Append the dateHeader to the dateDiv
 		dateDiv.appendChild(dateHeader);
 
-		// Create new h3 element with class "description-header hide" and text "Description:"
-		const descriptionHeader = document.createElement("h3");
+		// Create new h4 element with class "description-header hide" and text "Description:"
+		const descriptionHeader = document.createElement("h4");
 		descriptionHeader.classList.add("description-header", "hide");
 		descriptionHeader.textContent = "Description:";
 
@@ -117,7 +118,6 @@ export class Card extends HTMLElement {
 		rightWrap.append(dateDiv, descriptionHeader, descriptionTextarea);
 
 		// Elements in formActionWrapper and classes in them
-
 		// Create expand button
 		const expandButton = document.createElement("button");
 		expandButton.classList.add("collapsible-btn");
@@ -143,9 +143,10 @@ export class Card extends HTMLElement {
 		// Append elements to form-action-wrapper element
 		formActionWrapper.append(expandButton, saveDeleteWrapper);
 
+		// Apply styles
+		this.shadowRoot.innerHTML = this.cardStyle();
+
 		// Append wrappers to card
-		// this.append(leftWrap, centerWrap, rightWrap, formActionWrapper);
-		// const shadowCard = this;
 		this.shadowRoot.append(leftWrap, centerWrap, rightWrap, formActionWrapper);
 	}
 
@@ -165,6 +166,11 @@ export class Card extends HTMLElement {
 	}
 	cardStyle() {
 		return `<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+
 			.collapsible-container {
 			margin: 20px;
 			}
@@ -175,6 +181,19 @@ export class Card extends HTMLElement {
 
 			.priority-high{
 			background-color: red; 
+			height: 100%;
+			width: 100%;
+			}
+			.priority-medium {
+			background-color: #FFF500;
+			height: 100%;
+			width: 100%;
+			}
+
+			.priority-low {
+			background-color: #10ca00;
+			height: 100%;
+			width: 100%;
 			}
 
 			.collapsible-card{
@@ -184,21 +203,8 @@ export class Card extends HTMLElement {
 			border-radius: 4px;
 			box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
 			margin-bottom: 20px;
+			padding-bottom: 20px;
 			}
-			.border{
-				border: solid red;
-			
-			}
-
-
-			/* .collapsible-card { */
-			/*   display: grid; */
-			/*   grid-template-columns: 1fr 1fr; */
-			/*   background-color: #fff;
-			border-radius: 4px;
-			box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-			margin-bottom: 20px; */
-			/* } */
 
 			.collapsible-header {
 			
@@ -207,12 +213,6 @@ export class Card extends HTMLElement {
 			padding: 0 10px;
 			
 			/*   cursor: pointer; */
-			}
-
-			.collapsible-title {
-			display: grid;
-			grid-template-columns: 80px 1fr 120px;
-			margin: 0;
 			}
 
 			.collapsible-btn {
@@ -252,12 +252,24 @@ export class Card extends HTMLElement {
 			}
 
 
+			.right-wrapper {
+				height: 100%;
+				display: flex;
+				flex-direction: column;
+				
+				align-items: flex-start;
+				justify-content: center;
+				background-color: white;
+			}
+
+			
 
 			.collapsible-content {
-			padding: 10px;
-			/*   transition: height 0.5s ease; */
+			transition: height 0.5s ease;
 			transition: height;
 			overflow: hidden;
+			margin-left: 10px;
+			margin-right: 10px;
 			}
 
 			.collapsible-card.expanded .collapsible-content {
@@ -281,6 +293,7 @@ export class Card extends HTMLElement {
 			.form_wrapper{
 			display: flex;
 			flex-direction: column;
+			margin-bottom: 40px;
 			}
 
 			.form-action-wrapper{
@@ -293,11 +306,19 @@ export class Card extends HTMLElement {
 			.description-wrapper {
 			display: flex;
 			flex-direction: column;
+			height: 80%;
+			}
+
+			.center-wrapper{
+				display: flex;
+			flex-direction: column;
+			align-content: flex-start;
+			justify-content: flex-start
 			height: 100%;
+			background-color: white;
 			}
 
 			.description {
-			flex-grow: 1;
 			width: 98%;
 			height: 70%;
 			box-sizing: border-box;
@@ -372,15 +393,3 @@ export class Card extends HTMLElement {
 }
 
 customElements.define("custom-card", Card);
-
-// display: grid;
-// 	grid-template-columns: 70px 1fr 0.5fr 40px;
-// 	background-color: white;
-// 	width: 100%;
-// 	height: 70px;
-// 	justify-content: center;
-// 	align-items: center;
-// 	position: relative;
-// 	margin-top: 15px;
-// 	margin-bottom: 20px;
-// 	box-shadow: 0 4px 2px 0 #5a6161;

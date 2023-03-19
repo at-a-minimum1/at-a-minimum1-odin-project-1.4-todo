@@ -33,32 +33,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	let shadowRoot;
 
-	const observer = new MutationObserver((mutations) => {
-		mutations.forEach((mutation) => {
-			if (mutation.type == "childList" && mutation.addedNodes.length > 0) {
-				shadowRoot = mutation.addedNodes[0].shadowRoot;
-				shadowRoot.addEventListener("click", function (event) {
-					console.log("Classes: " + event.target.classList);
-					if (event.target.matches(".collapsible-btn")) {
-						domControl.toggleCollapsibleCard(event);
-					}
-					if (event.target.matches(".delete")) {
-						const btn = event.target;
-						const card = btn.closest(".collapsible-card") || shadowRoot.host;
-						card.remove();
-					}
-					if (event.target.matches(".edit")) {
-						domControl.toggleCollapsibleCard(event);
-					}
-				});
-			}
-		});
-	});
+	// const observer = new MutationObserver((mutations) => {
+	// 	mutations.forEach((mutation) => {
+	// 		if (mutation.type == "childList" && mutation.addedNodes.length > 0) {
+	// 			shadowRoot = mutation.addedNodes[0].shadowRoot;
+	// 			shadowRoot.addEventListener("click", function (event) {
+	// 				console.log("Classes: " + event.target.classList);
+	// 				if (event.target.matches(".collapsible-btn")) {
+	// 					domControl.toggleCollapsibleCard(event);
+	// 				}
+	// 				if (event.target.matches(".delete")) {
+	// 					const btn = event.target;
+	// 					const card = btn.closest(".collapsible-card") || shadowRoot.host;
+	// 					card.remove();
+	// 				}
+	// 				if (event.target.matches(".edit")) {
+	// 					domControl.toggleCollapsibleCard(event);
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// });
 
-	observer.observe(resultPanel, {
-		childList: true,
-		subtree: true,
-	});
+	// observer.observe(resultPanel, {
+	// 	childList: true,
+	// 	subtree: true,
+	// });
 
 	const addProject = document.getElementById("addProject");
 	const addTask = document.getElementById("addTask");

@@ -41,25 +41,8 @@ export class Card extends Item {
 		cardSelectPriority.add(mediumOption);
 		cardSelectPriority.add(highOption);
 
-		// console.log("console logged");
-		// console.log("Item object: " + this.item.getTitle);
-		// Set text content
-		// cardTitle.textContent = "this.item.getTitle()";
-		// cardDate.textContent = "this.item.getDate()";
-		// cardType.textContent = "this.item.type";
-		// cardDescription.textContent = "this.item.getDescription()";
-		// cardSelectPriority.textContent = "this.item.getPriority()";
-		// cardTitle.textContent = this.item.getTitle();
-
-		// cardTitle.textContent = item.getTitle ? item.getTitle() : "";
-		// cardDate.textContent = this.item.getDate();
-		// cardType.textContent = this.item.type;
-		// cardDescription.textContent = this.item.getDescription();
-		// cardSelectPriority.textContent = this.item.getPriority();
-
 		cardTitle.textContent = this.item.getTitle;
 		cardDate.textContent = this.item.getDate;
-		// cardType.textContent = Item.getPriority;
 		cardDescription.textContent = this.item.getDescription;
 		cardSelectPriority.textContent = this.item.getPriority;
 
@@ -77,11 +60,7 @@ export class Card extends Item {
 		// Append elements to card
 		card.appendChild(cardTitle);
 		card.appendChild(cardDate);
-		// card.appendChild(cardType);
-		// card.appendChild(cardDescription);
 		card.appendChild(cardPriority);
-
-		// console.log(card + "-");
 
 		return card;
 	}

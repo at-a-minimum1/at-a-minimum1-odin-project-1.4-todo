@@ -46,6 +46,11 @@ h3 {
 /* Classes in index.html */
 /* --------------------------- */
 /* Wrappers */
+.desktop_wrapper {
+	display: grid;
+	grid-template-columns: 20vw 1fr;
+	height: 88vh;
+}
 .task_wrapper {
 	background-color: #032a57;
 	width: 90%;
@@ -75,12 +80,6 @@ h3 {
 	height: fit-content;
 	justify-items: flex-end;
 	align-items: flex-end;
-}
-
-.desktop_wrapper {
-	display: grid;
-	grid-template-columns: 20vw 80vw;
-	height: 88vh;
 }
 
 .header_wrapper {
@@ -141,8 +140,12 @@ h3 {
 
 .right-wrapper {
 	background-color: #ebfeff;
-	overflow-x: hidden;
-	overflow-y: scroll;
+	/* overflow-x: hidden; */
+	/* overflow-y: scroll; */
+}
+
+.right-wrapper > * {
+	box-sizing: border-box;
 }
 
 /* Panels */

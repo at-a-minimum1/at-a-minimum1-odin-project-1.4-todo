@@ -12,8 +12,6 @@ export class Card extends Item {
 
 	// Creates a card element
 	createCard() {
-		// const cardObject = new Card;
-
 		// Create elements
 		const card = document.createElement("div");
 		const cardTitle = document.createElement("h2");
@@ -44,7 +42,7 @@ export class Card extends Item {
 		cardTitle.textContent = this.item.getTitle;
 		cardDate.textContent = this.item.getDate;
 		cardDescription.textContent = this.item.getDescription;
-		cardSelectPriority.textContent = this.item.getPriority;
+		cardSelectPriority.value = this.item.getPriority;
 
 		// Set classes
 		card.classList.add("card");

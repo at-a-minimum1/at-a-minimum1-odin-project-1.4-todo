@@ -22,4 +22,7 @@ export class List {
 		console.log("item not found");
 		// }
 	}
+	*[Symbol.iterator]() {
+    yield* this.list;
+  }
 }

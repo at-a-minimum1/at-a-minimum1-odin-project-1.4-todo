@@ -9,8 +9,26 @@ export function addCard(id, card) {
 }
 
 export function removeCard() {
-	// card.remove();
 	console.log("remove card invoked");
+}
+
+export function clearDOM(id) {
+	const panel = document.getElementById(id);
+	// Clears all the card elements from the DOM
+	while (panel.firstChild) {
+		panel.firstChild.remove();
+	}
+}
+
+export function displayTasks(taskList) {
+	// This function takes in the list of tasks* and appends them to the results panel *(projects, filtered by due date, sorted, etc)
+	// Implementing clearDOM here for testing. TODO
+	console.log(taskList);
+	for (const task of taskList) {
+		// Add the task
+		const card = new Card(task);
+		addCard("resultsPanel", card);
+	}
 }
 
 export function clearForm() {
@@ -21,38 +39,13 @@ export function clearForm() {
 	date.value = "2024-06-11";
 }
 
-export function strikeThrough(card) {
-	this.card.classList.toggle("strike_through");
-}
-
 export function expand(card) {
 	// Access the child of the card element and unhide it.
 	let cardDetails = card.querySelector(".cardDetails");
 	cardDetails.classList.toggle("show");
 }
 
-export function updateDOM(itemArray) {
-	for (item in itemArray) {
-		// let cards = new Card(new Card(item.getTitle, item.getDate));
-		addCard("resultPanel", new Card(item.getTitle, item.getDate));
-	}
-}
-
-// clearDOM(id){
-// 	let target = document.getElementById(id);
-// 	target.innerHTML = "";
-// }
-
-// export function updateDOM(itemList) {
-// 	clearDOM();
-// 	for (let item of itemList) {
-// 		let title = item.getTitle();
-// 		let date = item.getDate();
-// 		card = new Card(title, date);
-// 		addCard(card);
-// 	}
-// }
-
+// Refactor this to toggle without the shadow DOm
 export function toggleCollapsibleCard(event) {
 	const btn = event.target;
 	let card = btn.closest(".collapsible-card");
@@ -71,7 +64,6 @@ export function toggleCollapsibleCard(event) {
 	const header =
 		card.querySelector(".collapsible-title") ||
 		shadowRoot.querySelector(".collapsible-title");
-	// header.classList.toggle("hide");
 
 	console.log("Header value: " + header.classList);
 

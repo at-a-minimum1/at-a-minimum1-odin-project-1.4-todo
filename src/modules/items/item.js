@@ -2,9 +2,8 @@ export class Item {
 	constructor(...args) {
 		this.title = args[0];
 		this.date = args[1];
-		this.type = args[2];
-		this.description = args[3];
-		this.priority = args[4];
+		this.description = args[2];
+		this.priority = args[3];
 	}
 	set setTitle(title) {
 		title = this.title;
@@ -33,6 +32,4 @@ export class Item {
 	get getPriority() {
 		return this.priority;
 	}
-
-
 }

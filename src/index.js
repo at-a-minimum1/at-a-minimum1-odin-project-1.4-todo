@@ -6,70 +6,121 @@ import { List } from "./modules/items/list";
 const itemList = new List();
 
 document.addEventListener("DOMContentLoaded", () => {
-	document.getElementById("addItem").addEventListener("click", () => {
-		let title = document.getElementById("title").value;
-		let date = document.getElementById("dueDate").value;
+	function addEventListener(element, eventType, callback) {
+		element.addEventListener(eventType, callback);
+	}
 
-		const item = new Item(title, date);
-		const card = new Card(item);
+	const elements = [
+		{
+			// Accesses the add task button
+			element: document.getElementById("addItem"),
+			eventType: "click",
+			callback: () => {
+				let title = document.getElementById("title").value;
+				let date = document.getElementById("dueDate").value;
 
-		itemList.addToList(item);
-		domControl.addCard("resultsPanel", card);
-		// domControl.clearDOM("resultsPanel");
-		// domControl.displayTasks(itemList);
+				const item = new Item(title, date);
+				const card = new Card(item);
+
+				itemList.addToList(item);
+				domControl.addCard("resultsPanel", card);
+			},
+		},
+		{
+			// Accesses the sort button
+			element: document.getElementById("sort"),
+			eventType: "click",
+			callback: () => {
+				domControl.clearDOM("resultsPanel");
+				domControl.displayTasks(itemList);
+			},
+		},
+		{
+			// Accesses the add project button
+			element: document.getElementById("addProject"),
+			eventType: "click",
+			callback: () => {
+				domControl.expandCollapse(
+					document.getElementById("modalWrapperProject")
+				);
+			},
+		},
+		{
+			// Accesses the add task button
+			element: document.getElementById("addTask"),
+			eventType: "click",
+			callback: () => {
+				domControl.expandCollapse(document.getElementById("modalWrapperTask"));
+			},
+		},
+		{
+			// Accesses the close button on the task modal
+			element: document.getElementById("closeModalTask"),
+			eventType: "click",
+			callback: () => {
+				domControl.expandCollapse(document.getElementById("modalWrapperTask"));
+			},
+		},
+		{
+			// Accesses the project modal
+			element: document.getElementById("modalWrapperProject"),
+			eventType: "click",
+			callback: (event) => {
+				if (!document.getElementById("projectModal").contains(event.target)) {
+					domControl.expandCollapse(
+						document.getElementById("modalWrapperProject")
+					);
+				}
+			},
+		},
+		{
+			// Accesses the task modal wrapper
+			element: document.getElementById("modalWrapperTask"),
+			eventType: "click",
+			callback: (event) => {
+				if (!document.getElementById("taskModal").contains(event.target)) {
+					domControl.expandCollapse(
+						document.getElementById("modalWrapperTask")
+					);
+				}
+				printEventTarget(event);
+			},
+		},
+		{
+			// Accesses the close button on the project modal
+			element: document.getElementById("closeModalProject"),
+			eventType: "click",
+			callback: () => {
+				domControl.expandCollapse(
+					document.getElementById("modalWrapperProject")
+				);
+			},
+		},
+	];
+
+	elements.forEach(({ element, eventType, callback }) => {
+		addEventListener(element, eventType, callback);
 	});
 
-	const taskModalWrapper = document.getElementById("modalWrapperTask");
-	const projectModalWrapper = document.getElementById("modalWrapperProject");
-	const resultPanel = document.getElementById("resultsPanel");
+	function printTest() {
+		console.log("test");
+	}
 
-	const addProject = document.getElementById("addProject");
-	const addTask = document.getElementById("addTask");
-	const taskModal = document.getElementById("taskModal");
-	const sortButton = document.getElementById("sort");
-
-	sortButton.addEventListener("click", () => {
-		domControl.clearDOM("resultsPanel");
-	});
-
-	// Pulls up the modal panel for adding projects
-	addProject.addEventListener("click", () => {
-		projectModalWrapper.classList.toggle("hide");
-	});
-	// Brings up the modal panel for adding tasks
-	addTask.addEventListener("click", () => {
-		taskModalWrapper.classList.toggle("hide");
-	});
-
-	taskModalWrapper.addEventListener("click", (event) => {
-		if (event.target === taskModalWrapper) {
-			taskModalWrapper.classList.toggle("hide");
-		}
-	});
-	projectModalWrapper.addEventListener("click", (event) => {
-		if (event.target === projectModalWrapper) {
-			projectModalWrapper.classList.toggle("hide");
-		}
-	});
-
-	document.getElementById("closeModalTask").addEventListener("click", () => {
-		taskModalWrapper.classList.toggle("hide");
-	});
-	document.getElementById("closeModalProject").addEventListener("click", () => {
-		projectModalWrapper.classList.toggle("hide");
-	});
+	function printEventTarget(event) {
+		console.log(event.target);
+	}
 
 	resultsPanel.addEventListener("click", function (event) {
-		if (event.target.matches(".collapsible-btn")) {
-			domControl.toggleCollapsibleCard(event);
-		}
-		if (event.target.matches(".delete")) {
-			const btn = event.target;
-			const card = btn.closest(".collapsible-card");
-			card.remove();
-		}
-		if (event.target.matches(".edit")) {
-			domControl.toggleCollapsibleCard(event);
-		}
+		// if (event.target.matches(".collapsible-btn")) {
+		// 	domControl.toggleCollapsibleCard(event);
+		// }
+		// if (event.target.matches(".delete")) {
+		// 	const btn = event.target;
+		// 	const card = btn.closest(".collapsible-card");
+		// 	card.remove();
+		// }
+		// if (event.target.matches(".edit")) {
+		// 	domControl.toggleCollapsibleCard(event);
+		// }
 	});
 });

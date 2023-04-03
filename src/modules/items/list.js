@@ -1,9 +1,17 @@
 // import "item.js";
 
 export class List {
-	constructor(list) {
+	constructor(list, title) {
 		this.list = list || [];
+		this.title = title || "Project Name Placeholder";
 	}
+	get getTitle() {
+		return this.title;
+	}
+	set setTitle(titleName) {
+		this.title = titleName;
+	}
+
 	get getlist() {
 		return this.list;
 	}
@@ -23,6 +31,6 @@ export class List {
 		// }
 	}
 	*[Symbol.iterator]() {
-    yield* this.list;
-  }
+		yield* this.list;
+	}
 }

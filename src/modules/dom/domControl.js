@@ -1,4 +1,5 @@
 import { Card } from "../items/card";
+import { List } from "../items/list";
 
 export function addCard(id, card) {
 	const createdCard = card.createCard();
@@ -6,6 +7,34 @@ export function addCard(id, card) {
 
 	const target = document.getElementById(id);
 	target.appendChild(createdCard);
+}
+
+export function addProject(list) {
+	const project = list;
+	const expandButton = document.createElement("button");
+	const listButton = document.createElement("button");
+	const projectWrapper = document.getElementById("projectPanel");
+	const listContainer = document.createElement("div");
+	const ulList = document.createElement("ul");
+	for (listItem of project) {
+		const liItem = document.createElement("li");
+		liItem.textContent = "-" + listItem.title;
+		ulList.appendChild(liItem);
+	}
+	// Set up the text content of the elements
+	expandButton.textContent = "+";
+	listButton.textContent = project.title;
+	// Set up the classList for the elements
+	listButton.classList.add("list-button");
+	expandButton.classList.add("expand-collapse-button");
+	ulList.classList.add("ul-list");
+	ulList.classList.add("hide");
+
+	listContainer.appendChild(expandButton);
+	listContainer.appendChild(listButton);
+	listContainer.appendChild(ulList);
+
+	projectWrapper.appendChild(listContainer);
 }
 
 // export function addListItem(list) {
@@ -35,7 +64,6 @@ export function clearDOM(id) {
 }
 
 export function displayTasks(taskList) {
-	// This function takes in the list of tasks* and appends them to the results panel *(projects, filtered by due date, sorted, etc)
 	for (const task of taskList) {
 		// Add the task
 		const card = new Card(task);

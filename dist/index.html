@@ -30,7 +30,7 @@
 					<label for="dueDate">Due Date</label>
 					<input type="date" id="dueDate" value="2050-07-02"></input>
 
-					<button id="addItem">+ Add Task</button>
+					<button id="addTaskModal">+ Add Task</button>
 				</div>
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 					<input type="text" id="projectName" value="Sample Project"></input>
 					
 		
-					<button>+ Add Project</button>
+					<button id="addProjectModal">+ Add Project</button>
 				</div>
 			</div>
 		</div>
@@ -57,23 +57,46 @@
 		</header>
 		<div class="desktop_wrapper">
 			<div class="control_panel">
-				<div class="input_wrapper">
+				<div class="input_wrapper" id="inputWrapper">
 					<div class="task_wrapper">
-						<ul>
-							-All Tasks
-							<li>Today</li>
-							<li>Next Week</li>
-							<li>Important</li>
-						</ul>
+						<div class="list-container">
+							<button class="expand-collapse-button">+</button>
+							<button class="list-button">All Tasks</button>
+							<ul class="ul-list hide">
+								&nbsp; &nbsp; <button class="list-button dark-blue-border">Today</button>
+								&nbsp; &nbsp; <button class="list-button dark-blue-border">Next Week</button>
+								&nbsp; &nbsp; <button class="list-button dark-blue-border">Important</button>
+							</ul>
+						</div>
 						<button id="addTask" class="control-panel-button">+ Add Task</button>
 					</div>
 					<div class="project_wrapper" id="projectWrapper">
-						<ul>
-							-Project Todo
-							<li>Task one</li>
-							<li>Task two</li>
-							<li>Task three</li>
-						</ul>
+						<div class="project-panel" id="projectPanel">
+
+							<div class="list-container">
+								<button class="expand-collapse-button">+</button>
+								<button class="list-button">Project Todo</button>
+								<ul class="ul-list hide">
+									<li>Task one</li>
+									<li>Task two</li>
+									<li>Task three</li>
+								</ul>
+							</div>
+							<div class="list-container">
+								<button class="expand-collapse-button">+</button>
+								<button class="list-button">Project OdinBook</button>
+								<ul class="ul-list hide">
+									<li>Task one</li>
+									<li>Task two</li>
+									<li>Task three</li>
+								</ul>
+							
+							</div>
+
+						</div>
+					
+
+
 						<!-- Button should open a dialogue box -->
 						<button id="addProject" class="control-panel-button">+ Add Project</button>
 					</div>
@@ -82,12 +105,12 @@
 			<div class="right-wrapper">
 				<div class="category_wrapper" id="categoryWrapper">
 
-					<h3> &nbsp; Project Todo</h3>
+					<h3 id="headerListName">All Tasks</h3>
 					<button class="sort-button" id="sort">Sort</button>
-					<div class="sort-panel">
-						<button>Task</button>
-						<button>Date</button>
-						<button>Priority</button>
+					<div class="sort-panel hide" id="sortPanel">
+						<button id="sortTask">Task</button>
+						<button id="sortDate">Date</button>
+						<button id="sortPriority">Priority</button>
 					</div>
 				</div>
 				<div class="results_panel" id="resultsPanel">

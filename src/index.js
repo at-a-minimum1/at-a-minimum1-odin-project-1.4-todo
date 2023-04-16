@@ -58,7 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("sortTask"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks(sortArray(allTasks, "title"));
+				let currentArray = getCurrentTaskArray();
+				domControl.clearDOM("resultsPanel");
+				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "title"));
+				domControl.displayTasks(sortArray(currentArray.list, "title"));
 			},
 		},
 
@@ -67,7 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("sortDate"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks(sortArray(allTasks, "date"));
+				let currentArray = getCurrentTaskArray();
+				domControl.clearDOM("resultsPanel");
+				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "date"));
+				domControl.displayTasks(sortArray(currentArray.list, "date"));
 			},
 		},
 
@@ -76,7 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("sortPriority"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks(sortArray(allTasks, "priority"));
+				let currentArray = getCurrentTaskArray();
+				domControl.clearDOM("resultsPanel");
+				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "priority"));
+				domControl.displayTasks(sortArray(currentArray.list, "priority"));
 			},
 		},
 
@@ -213,6 +222,12 @@ document.addEventListener("DOMContentLoaded", () => {
 		// }
 	});
 
+	// TODO Use this in the sort array buttons above.
+	function getCurrentTaskArray() {
+		const listName = headerListName.textContent;
+		return allArrays[listName];
+	}
+
 	function sortArray(array, sortBy) {
 		if (sortBy === "title") {
 			array.sort();
@@ -223,7 +238,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (sortBy === "priority") {
 			array.sort((a, b) => a.priority - b.priority);
 		}
-		domControl.clearDOM("resultsPanel");
 		return array;
 	}
 

@@ -293,8 +293,24 @@ h3 {
 	cursor: pointer;
 	background-color: #08366b;
 	color: white;
-	width: 80%;
+	width: 100%;
+	margin-bottom: 5px;
 	border-radius: 3px;
+}
+
+.list-button:hover {
+	background-color: #1e426c;
+}
+
+.category-button {
+	cursor: pointer;
+	background-color: #08366b;
+	color: white;
+	width: 80%;
+}
+
+.category-button:hover {
+	background-color: #1e426c;
 }
 
 /* --------------------------- */

@@ -3,53 +3,23 @@ import { List } from "../items/list";
 
 export function addCard(id, card) {
 	const createdCard = card.createCard();
-	// this.card = card.createCard();
-
 	const target = document.getElementById(id);
 	target.appendChild(createdCard);
 }
 
+//TODO Check to see if project already exists.
 export function addProject(list) {
 	const project = list;
-	const expandButton = document.createElement("button");
 	const listButton = document.createElement("button");
 	const projectWrapper = document.getElementById("projectPanel");
 	const listContainer = document.createElement("div");
-	const ulList = document.createElement("ul");
-	for (listItem of project) {
-		const liItem = document.createElement("li");
-		liItem.textContent = "-" + listItem.title;
-		ulList.appendChild(liItem);
-	}
-	// Set up the text content of the elements
-	expandButton.textContent = "+";
+
 	listButton.textContent = project.title;
-	// Set up the classList for the elements
 	listButton.classList.add("list-button");
-	expandButton.classList.add("expand-collapse-button");
-	ulList.classList.add("ul-list");
-	ulList.classList.add("hide");
 
-	listContainer.appendChild(expandButton);
 	listContainer.appendChild(listButton);
-	listContainer.appendChild(ulList);
-
 	projectWrapper.appendChild(listContainer);
 }
-
-// export function addListItem(list) {
-// 	const listItem = document.createElement(ul);
-// }
-
-// export function updateList(items) {
-// 	// ijdfsoisjfd
-// 	const container = document.getElementById("someContainer");
-// 	items.forEach((item) => {
-// 		const ul = document.createElement("ul");
-// 		ul.textContent = item.title;
-// 		container.appendChild(ul);
-// 	});
-// }
 
 export function removeCard() {
 	console.log("remove card invoked");
@@ -82,6 +52,8 @@ export function clearForm() {
 export function expandCollapse(container) {
 	container.classList.toggle("hide");
 }
+
+// TODO Make a function that expands the card elements.
 
 // Refactor this to toggle without the shadow DOm
 // export function toggleCollapsibleCard(event) {

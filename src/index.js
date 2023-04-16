@@ -13,6 +13,8 @@ const allArrays = {
 	Today: today,
 	"Next Week": nextWeek,
 	Important: important,
+	Todo: new List([], "Project Todo"),
+	Odinbook: new List([], "Odinbook"),
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const card = new Card(item);
 
 				allTasks.addToList(item);
+				validateAndAddToList(item);
 				domControl.addCard("resultsPanel", card);
 			},
 		},
@@ -42,22 +45,41 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let title = document.getElementById("projectName").value;
-
-				const list = new List([], title);
-				console.log(list + " List title: " + title);
-				domControl.addProject(list);
+				if (!Object.keys(allArrays).includes(title)) {
+					const list = new List([], title);
+					allArrays[title] = list;
+					domControl.addProject(list);
+				}
 			},
 		},
+		// Sort buttons
 		{
-			// Accesses the sort button
-			element: document.getElementById("sort"),
+			// Accesses the sort task button
+			element: document.getElementById("sortTask"),
 			eventType: "click",
 			callback: () => {
-				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks(allTasks);
-				console.log(allTasks);
+				domControl.displayTasks(sortArray(allTasks, "title"));
 			},
 		},
+
+		{
+			// Accesses the sort button
+			element: document.getElementById("sortDate"),
+			eventType: "click",
+			callback: () => {
+				domControl.displayTasks(sortArray(allTasks, "date"));
+			},
+		},
+
+		{
+			// Accesses the sort button
+			element: document.getElementById("sortPriority"),
+			eventType: "click",
+			callback: () => {
+				domControl.displayTasks(sortArray(allTasks, "priority"));
+			},
+		},
+
 		{
 			// Accesses the add project button
 			element: document.getElementById("addProject"),
@@ -143,6 +165,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	const projectWrapper = document.getElementById("projectWrapper");
 	const headerListName = document.getElementById("headerListName");
 
+	// function validateAndAddToList(item) {
+	// 	console.log(headerListName.textContent);
+	// 	if (allArrays.contains(headerListName.textContent)) {
+	// 		allArrays[headerListName.textContent].addToList(item);
+	// 	}
+	// }
+
 	inputWrapper.addEventListener("click", function (event) {
 		if (event.target.matches(".expand-collapse-button")) {
 			const btn = event.target;
@@ -154,13 +183,15 @@ document.addEventListener("DOMContentLoaded", () => {
 				btn.textContent = "-";
 			}
 		}
-		if (event.target.matches(".list-button")) {
+		if (
+			event.target.matches(".list-button") ||
+			event.target.matches(".category-button")
+		) {
 			const btn = event.target;
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
 
 			// Update the results panel to show the tasks in the list selected
-			// TODO Make sure the taskArray is correctly accessing the right array before updating the DOM.
 			const taskArray = allArrays[btnText];
 			domControl.clearDOM("resultsPanel");
 			domControl.displayTasks(taskArray);
@@ -181,17 +212,38 @@ document.addEventListener("DOMContentLoaded", () => {
 		// 	domControl.toggleCollapsibleCard(event);
 		// }
 	});
+
+	function sortArray(array, sortBy) {
+		if (sortBy === "title") {
+			array.sort();
+		}
+		if (sortBy === "date") {
+			array.sort((a, b) => b.localeCompare(a));
+		}
+		if (sortBy === "priority") {
+			array.sort((a, b) => a.priority - b.priority);
+		}
+		domControl.clearDOM("resultsPanel");
+		return array;
+	}
+
+	function validateAndAddToList(item) {
+		const headerName = headerListName.textContent.trim();
+		if (!headerName) {
+			console.error("Header name is empty");
+			return;
+		}
+		if (!allArrays.hasOwnProperty(headerName)) {
+			console.error(`No list found for header "${headerName}"`);
+			return;
+		}
+		allArrays[headerName].addToList(item);
+	}
 });
-
-// TODO: Set up basic user interface to display all projects and their associated todos.
-
-// TODO: Display the title and due date of each todo and use color-coding to differentiate priorities.
 
 // TODO: Implement a feature to expand a single todo to view and edit its details.
 
 // TODO: Add functionality to delete a todo.
-
-// TODO: Research and analyze the Todoist, Things, and any.do applications for inspiration and design ideas.
 
 // TODO: Install and import the date-fns library to use its helpful functions for formatting and manipulating dates and times.
 

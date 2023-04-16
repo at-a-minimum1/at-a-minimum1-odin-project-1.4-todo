@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "title"));
+				
 				domControl.displayTasks(sortArray(currentArray.list, "title"));
 			},
 		},
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "date"));
+			
 				domControl.displayTasks(sortArray(currentArray.list, "date"));
 			},
 		},
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-				console.log(currentArray.list + " sorted " + sortArray(currentArray.list, "priority"));
+				
 				domControl.displayTasks(sortArray(currentArray.list, "priority"));
 			},
 		},
@@ -227,13 +227,31 @@ document.addEventListener("DOMContentLoaded", () => {
 		const listName = headerListName.textContent;
 		return allArrays[listName];
 	}
+	// This is a chatGPT answer for accessing the title properties in the objects and comparing them.
+	// array.sort((a, b) => {
+	//   if (a.title < b.title) {
+	//     return -1;
+	//   }
+	//   if (a.title > b.title) {
+	//     return 1;
+	//   }
+	//   return 0;
+	// });
 
 	function sortArray(array, sortBy) {
 		if (sortBy === "title") {
-			array.sort();
+			array.sort((a, b) => {
+				if (a.title < b.title) {
+					return -1;
+				}
+				if (a.title > b.title) {
+					return 1;
+				}
+				return 0;
+			});
 		}
 		if (sortBy === "date") {
-			array.sort((a, b) => b.localeCompare(a));
+			array.sort((a, b) => b.date.localeCompare(a.date));
 		}
 		if (sortBy === "priority") {
 			array.sort((a, b) => a.priority - b.priority);

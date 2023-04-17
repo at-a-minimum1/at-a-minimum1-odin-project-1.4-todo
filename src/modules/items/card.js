@@ -4,10 +4,15 @@ export class Card extends Item {
 	constructor(item) {
 		super();
 		this.item = item;
-		const itemTitle = item.getTitle;
-		const itemDate = item.getDate;
-		const itemPriority = item.getPriority;
-		const itemDescription = item.getDescription;
+		this.itemTitle = item.title;
+		this.itemDate = item.date;
+		this.itemPriority = item.priority;
+		this.itemDescription = item.description;
+
+		// this.itemTitle = item.getTitle();
+		// this.itemDate = item.getDate();
+		// this.itemPriority = item.getPriority();
+		// this.itemDescription = item.getDescription();
 	}
 
 	// Creates a card element
@@ -67,8 +72,30 @@ export class Card extends Item {
 		expandButton.classList.add("expand-button");
 
 		// Priority experiment
-		checkboxWrapper.classList.add("priority-high");
-		expandWrapper.classList.add("priority-high");
+		// TODO change the priority class type based on high, medium, low
+		if (this.item.getPriority == "priorityLow") {
+			// console.log("Priority: " + Card.itemPriority.value);
+			// console.log(this.item);
+			// console.log("Priority: " + this.item.getPriority);
+			checkboxWrapper.classList.add("priority-low");
+			expandWrapper.classList.add("priority-low");
+		}
+		if (this.item.getPriority == "priorityMedium") {
+			// console.log("Priority: " + Card.itemPriority.value);
+			// console.log(this.item);
+			// console.log("Priority: " + this.item.getPriority);
+			checkboxWrapper.classList.add("priority-medium");
+			expandWrapper.classList.add("priority-medium");
+		}
+		if (this.item.getPriority == "priorityHigh") {
+			// console.log("Priority: " + Card.itemPriority.value);
+			// console.log(this.item);
+			// console.log("Priority: " + this.item.getPriority);
+			checkboxWrapper.classList.add("priority-high");
+			expandWrapper.classList.add("priority-high");
+		}
+		// checkboxWrapper.classList.add("priority-high");
+		// expandWrapper.classList.add("priority-high");
 
 		// Append elements to cardPriority
 		cardPriority.appendChild(cardSelectPriority);

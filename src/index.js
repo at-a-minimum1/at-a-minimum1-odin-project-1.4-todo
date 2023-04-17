@@ -30,11 +30,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let title = document.getElementById("title").value;
 				let date = document.getElementById("dueDate").value;
+				// TODO add the ability to add a description when adding a task with a dropdown and then reference it for this variable
+				let description = "Sample Description";
+				let priority = document.getElementById("priorityDropdown");
+				let selectedPriorityValue = priority.value;
 
-				const item = new Item(title, date);
+				const item = new Item(title, date, description, selectedPriorityValue);
 				const card = new Card(item);
 
-				allTasks.addToList(item);
 				validateAndAddToList(item);
 				domControl.addCard("resultsPanel", card);
 			},
@@ -60,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-				
+
 				domControl.displayTasks(sortArray(currentArray.list, "title"));
 			},
 		},
@@ -72,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-			
+
 				domControl.displayTasks(sortArray(currentArray.list, "date"));
 			},
 		},
@@ -84,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
-				
+
 				domControl.displayTasks(sortArray(currentArray.list, "priority"));
 			},
 		},
@@ -227,18 +230,14 @@ document.addEventListener("DOMContentLoaded", () => {
 		const listName = headerListName.textContent;
 		return allArrays[listName];
 	}
-	// This is a chatGPT answer for accessing the title properties in the objects and comparing them.
-	// array.sort((a, b) => {
-	//   if (a.title < b.title) {
-	//     return -1;
-	//   }
-	//   if (a.title > b.title) {
-	//     return 1;
-	//   }
-	//   return 0;
-	// });
 
 	function sortArray(array, sortBy) {
+		const priorityValues = {
+			priorityHigh: 3,
+			priorityMedium: 2,
+			priorityLow: 1,
+		};
+
 		if (sortBy === "title") {
 			array.sort((a, b) => {
 				if (a.title < b.title) {
@@ -254,7 +253,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			array.sort((a, b) => b.date.localeCompare(a.date));
 		}
 		if (sortBy === "priority") {
-			array.sort((a, b) => a.priority - b.priority);
+			array.sort((a, b) => {
+				const aVal = priorityValues[a.priority];
+				const bVal = priorityValues[b.priority];
+				// console.log(a.priority);
+
+				return bVal - aVal;
+			});
 		}
 		return array;
 	}
@@ -269,6 +274,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			console.error(`No list found for header "${headerName}"`);
 			return;
 		}
+		if (headerName != "All Tasks") {
+			allTasks.addToList(item);
+		}
+		
 		allArrays[headerName].addToList(item);
 	}
 });

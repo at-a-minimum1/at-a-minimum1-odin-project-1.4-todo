@@ -212,6 +212,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	resultsPanel.addEventListener("click", function (event) {
 		// TODO Add the ability to expand and collapse the card elements.
+		if (event.target.matches(".expand-button")) {
+			console.log("Expand Button works");
+		}
 		// if (event.target.matches(".collapsible-btn")) {
 		// 	domControl.toggleCollapsibleCard(event);
 		// }
@@ -277,7 +280,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (headerName != "All Tasks") {
 			allTasks.addToList(item);
 		}
-		
+
 		allArrays[headerName].addToList(item);
 	}
 });

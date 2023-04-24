@@ -211,9 +211,11 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	resultsPanel.addEventListener("click", function (event) {
-		// TODO Add the ability to expand and collapse the card elements.
+		const target = event.target;
+		const card = target.closest(".card");
+
 		if (event.target.matches(".expand-button")) {
-			console.log("Expand Button works");
+			domControl.toggleCard(card);
 		}
 		// if (event.target.matches(".collapsible-btn")) {
 		// 	domControl.toggleCollapsibleCard(event);

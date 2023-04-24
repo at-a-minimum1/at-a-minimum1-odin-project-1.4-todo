@@ -7,7 +7,6 @@ export function addCard(id, card) {
 	target.appendChild(createdCard);
 }
 
-//TODO Check to see if project already exists.
 export function addProject(list) {
 	const project = list;
 	const listButton = document.createElement("button");
@@ -53,7 +52,28 @@ export function expandCollapse(container) {
 	container.classList.toggle("hide");
 }
 
-// TODO Make a function that expands the card elements.
+export function toggleCard(card) {
+	const titleHeader = card.querySelector(".card-title");
+	const dateHeader = card.querySelector(".card-date");
+	// Hidden elements
+	const collapsibleForm = card.querySelector(".collapsible-form");
+	const collapsibleDescription = card.querySelector(".collapsible-description");
+	const collapsibleEditButtonWrap = card.querySelector(
+		".collapsible-button-wrap"
+	);
+	titleHeader.classList.toggle("hide");
+	dateHeader.classList.toggle("hide");
+	collapsibleForm.classList.toggle("display-flex");
+	collapsibleDescription.classList.toggle("display-flex");
+	collapsibleEditButtonWrap.classList.toggle("display-flex");
+
+	const expandButton = card.querySelector(".expand-button");
+	if (expandButton.textContent == "Expand") {
+		expandButton.textContent = "Collapse";
+	} else {
+		expandButton.textContent = "Expand";
+	}
+}
 
 // Refactor this to toggle without the shadow DOm
 // export function toggleCollapsibleCard(event) {

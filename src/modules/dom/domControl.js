@@ -20,8 +20,8 @@ export function addProject(list) {
 	projectWrapper.appendChild(listContainer);
 }
 
-export function removeCard() {
-	console.log("remove card invoked");
+export function removeCard(card) {
+	card.remove();
 }
 
 export function clearDOM(id) {
@@ -74,75 +74,3 @@ export function toggleCard(card) {
 		expandButton.textContent = "Expand";
 	}
 }
-
-// Refactor this to toggle without the shadow DOm
-// export function toggleCollapsibleCard(event) {
-// 	const btn = event.target;
-// 	let card = btn.closest(".collapsible-card");
-// 	const shadowRoot = btn.getRootNode();
-
-// 	// Reassign card if it's in the shadow DOM
-// 	if (card == null) {
-// 		card = shadowRoot.host;
-
-// 		if (card == null) {
-// 			console.log("Card not being accessed in toggleCollapsibleCard.");
-// 			return;
-// 		}
-// 		console.log("Card value: " + card.classList);
-// 	}
-// 	const header =
-// 		card.querySelector(".collapsible-title") ||
-// 		shadowRoot.querySelector(".collapsible-title");
-
-// 	console.log("Header value: " + header.classList);
-
-// 	const date = card.querySelector(".date") || shadowRoot.querySelector(".date");
-
-// 	const input =
-// 		card.querySelector(".input-wrapper") ||
-// 		shadowRoot.querySelector(".input-wrapper");
-
-// 	const contentCollapsible =
-// 		card.querySelector(".collapsible-content") ||
-// 		shadowRoot.querySelector(".collapsible-content");
-
-// 	const editDelete =
-// 		card.querySelector(".edit-delete-wrapper") ||
-// 		shadowRoot.querySelector(".edit-delete-wrapper");
-
-// 	const descriptionHeader =
-// 		card.querySelector(".description-header") ||
-// 		shadowRoot.querySelector(".description-header");
-
-// 	const description =
-// 		card.querySelector(".description") ||
-// 		shadowRoot.querySelector(".description");
-
-// 	header.classList.toggle("hide");
-// 	date.classList.toggle("hide");
-// 	input.classList.toggle("hide");
-// 	contentCollapsible.classList.toggle("hide");
-// 	editDelete.classList.toggle("hide");
-// 	descriptionHeader.classList.toggle("hide");
-// 	description.classList.toggle("hide");
-
-// 	card.classList.toggle("expanded");
-
-// 	const expand =
-// 		card.querySelector(".collapsible-btn") ||
-// 		shadowRoot.querySelector(".collapsible-btn");
-// 	const content =
-// 		card.querySelector(".collapsible-content") ||
-// 		shadowRoot.querySelector(".collapsible-content");
-// 	if (card.classList.contains("expanded")) {
-// 		expand.textContent = "Collapse";
-// 		// content.style.height = "100000px";
-// 		content.style.height = content.scrollHeight + "px";
-// 		content.style.backgroundColor = "white";
-// 		// content.style.paddingBottom = "200px";
-// 	} else {
-// 		expand.textContent = "Expand";
-// 		content.style.height = "0";
-// 	}
-// }

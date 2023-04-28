@@ -8,8 +8,12 @@ export class Card extends Item {
 		this.itemDate = item.date;
 		this.itemPriority = item.priority;
 		this.itemDescription = item.description;
+		this.itemId = item.id;
 	}
 
+	get getItem() {
+		return this.item;
+	}
 	// Creates a card element
 	createCard() {
 		// Create divs
@@ -43,6 +47,7 @@ export class Card extends Item {
 		const saveButton = document.createElement("button");
 
 		// Set attributes
+		card.setAttribute("data-id", this.itemId);
 		checkbox.setAttribute("type", "checkbox");
 
 		labelTitleHeader.setAttribute("for", "inputTitle");
@@ -70,7 +75,7 @@ export class Card extends Item {
 		// cardDate.value = cardDate.textContent;
 		labelPriorityHeader.textContent = "Priority";
 		optionPriorityHigh.textContent = "High";
-		optionPriorityMedium.textContent = "Medium";
+		optionPriorityMedium.textContent = "Normal";
 		optionPriorityLow.textContent = "Low";
 		descriptionHeader.textContent = "Description:";
 		descriptionTextArea.value = cardDescription.textContent;
@@ -82,7 +87,6 @@ export class Card extends Item {
 		cardTitle.classList.add("card-title");
 		cardDate.classList.add("card-date");
 		cardDescription.classList.add("card-description");
-		// cardPriority.classList.add("card-priority");
 		checkboxWrapper.classList.add("checkbox-wrapper");
 		titleWrapper.classList.add("title-wrapper");
 		dateWrapper.classList.add("date-wrapper");
@@ -92,22 +96,24 @@ export class Card extends Item {
 		collapsibleForm.classList.add("hide", "collapsible-form");
 		collapsibleDescription.classList.add("hide", "collapsible-description");
 		collapsibleEditButtonWrap.classList.add("hide", "collapsible-button-wrap");
+		saveButton.classList.add("save-button");
+		deleteButton.classList.add("delete-button");
 
 		// Changes the color based on the priority selected
 		if (this.item.getPriority == "priorityLow") {
 			checkboxWrapper.classList.add("priority-low");
 			expandWrapper.classList.add("priority-low");
-			optionPriorityLow.setAttribute("selected","");
+			optionPriorityLow.setAttribute("selected", "");
 		}
 		if (this.item.getPriority == "priorityMedium") {
 			checkboxWrapper.classList.add("priority-medium");
 			expandWrapper.classList.add("priority-medium");
-			optionPriorityMedium.setAttribute("selected");
+			optionPriorityMedium.setAttribute("selected", "");
 		}
 		if (this.item.getPriority == "priorityHigh") {
 			checkboxWrapper.classList.add("priority-high");
 			expandWrapper.classList.add("priority-high");
-			optionPriorityHigh.setAttribute("selected","");
+			optionPriorityHigh.setAttribute("selected", "");
 		}
 
 		// Append elements to wrappers

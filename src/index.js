@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				domControl.expandCollapse(document.getElementById("sortPanel"));
+				console.log(allTasks.list);
 			},
 		},
 	];
@@ -211,12 +212,24 @@ document.addEventListener("DOMContentLoaded", () => {
 	});
 
 	resultsPanel.addEventListener("click", function (event) {
-		const target = event.target;
-		const card = target.closest(".card");
+		const card = event.target.closest(".card");
+		const cardID = card.getAttribute("data-id");
+		// const cardObject = allTasks.list.find((task) => task.id === cardID);
+
+		// const itemSelected = card.dataset.item;
+		const itemSelected = allTasks.list.find((item) => item.id === cardID);
 
 		if (event.target.matches(".expand-button")) {
 			domControl.toggleCard(card);
 		}
+		if (event.target.matches(".save-button")) {
+			console.log("Save button");
+		}
+		if (event.target.matches(".delete-button")) {
+			domControl.removeCard(card);
+			allTasks.removeFromList(itemSelected);
+		}
+
 		// if (event.target.matches(".collapsible-btn")) {
 		// 	domControl.toggleCollapsibleCard(event);
 		// }
@@ -230,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		// }
 	});
 
-	// TODO Use this in the sort array buttons above.
 	function getCurrentTaskArray() {
 		const listName = headerListName.textContent;
 		return allArrays[listName];

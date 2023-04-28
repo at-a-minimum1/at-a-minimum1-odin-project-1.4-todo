@@ -1,4 +1,3 @@
-
 export class List {
 	constructor(list, title) {
 		this.list = list || [];
@@ -11,10 +10,10 @@ export class List {
 		this.title = titleName;
 	}
 
-	get getlist() {
+	get getList() {
 		return this.list;
 	}
-	set setlist(list) {
+	set setList(list) {
 		this.list = list;
 	}
 	addToList(item) {

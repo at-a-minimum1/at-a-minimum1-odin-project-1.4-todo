@@ -1,9 +1,12 @@
+import { v4 as uuidv4 } from "uuid";
+
 export class Item {
 	constructor(...args) {
 		this.title = args[0];
 		this.date = args[1];
 		this.description = args[2];
 		this.priority = args[3];
+		this.id = uuidv4();
 	}
 	set setTitle(title) {
 		title = this.title;
@@ -31,5 +34,9 @@ export class Item {
 	}
 	get getPriority() {
 		return this.priority;
+	}
+
+	get getId() {
+		return this.id;
 	}
 }

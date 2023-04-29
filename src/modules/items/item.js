@@ -15,7 +15,7 @@ export class Item {
 		return this.title;
 	}
 
-	set setTitle(date) {
+	set setDate(date) {
 		this.date = date;
 	}
 	get getDate() {

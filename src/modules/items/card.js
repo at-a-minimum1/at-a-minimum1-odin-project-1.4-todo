@@ -11,9 +11,9 @@ export class Card extends Item {
 		this.itemId = item.id;
 	}
 
-	get getItem() {
-		return this.item;
-	}
+	// get getItem() {
+	// 	return this.item;
+	// }
 	// Creates a card element
 	createCard() {
 		// Create divs
@@ -28,7 +28,6 @@ export class Card extends Item {
 		// Create elements
 		const cardTitle = document.createElement("h2");
 		const cardDate = document.createElement("p");
-		const cardDescription = document.createElement("p");
 		const checkbox = document.createElement("input");
 		const expandButton = document.createElement("button");
 		// Hidden on load elements
@@ -49,15 +48,11 @@ export class Card extends Item {
 		// Set attributes
 		card.setAttribute("data-id", this.itemId);
 		checkbox.setAttribute("type", "checkbox");
-
 		labelTitleHeader.setAttribute("for", "inputTitle");
 		labelPriorityHeader.setAttribute("for", "selectPriority");
 		labelDueDateHeader.setAttribute("for", "inputDate");
 		inputTitle.setAttribute("type", "text");
 		inputDate.setAttribute("type", "date");
-		// sdoifj
-		inputDate.setAttribute("value", cardDate.textContent);
-		selectPriority.setAttribute("id", "priorityDropdown");
 		optionPriorityHigh.setAttribute("value", "priorityHigh");
 		optionPriorityMedium.setAttribute("value", "priorityMedium");
 		optionPriorityLow.setAttribute("value", "priorityLow");
@@ -65,20 +60,18 @@ export class Card extends Item {
 		// Set text content
 		cardTitle.textContent = this.item.getTitle;
 		cardDate.textContent = this.item.getDate;
-		cardDescription.textContent = this.item.getDescription;
-		// selectPriority.value = this.item.getPriority;
+		inputDate.value = this.item.getDate;
+		descriptionTextArea.value = this.item.getDescription;
 		expandButton.textContent = "Expand";
 		// Set text content of hidden elements
 		labelTitleHeader.textContent = "Title";
 		inputTitle.value = cardTitle.textContent;
 		labelDueDateHeader.textContent = "Date";
-		// cardDate.value = cardDate.textContent;
 		labelPriorityHeader.textContent = "Priority";
 		optionPriorityHigh.textContent = "High";
 		optionPriorityMedium.textContent = "Normal";
 		optionPriorityLow.textContent = "Low";
 		descriptionHeader.textContent = "Description:";
-		descriptionTextArea.value = cardDescription.textContent;
 		deleteButton.textContent = "Delete";
 		saveButton.textContent = "Save";
 
@@ -86,7 +79,6 @@ export class Card extends Item {
 		card.classList.add("card");
 		cardTitle.classList.add("card-title");
 		cardDate.classList.add("card-date");
-		cardDescription.classList.add("card-description");
 		checkboxWrapper.classList.add("checkbox-wrapper");
 		titleWrapper.classList.add("title-wrapper");
 		dateWrapper.classList.add("date-wrapper");
@@ -98,6 +90,10 @@ export class Card extends Item {
 		collapsibleEditButtonWrap.classList.add("hide", "collapsible-button-wrap");
 		saveButton.classList.add("save-button");
 		deleteButton.classList.add("delete-button");
+		descriptionTextArea.classList.add("description-textarea");
+		inputTitle.classList.add("input-title");
+		inputDate.classList.add("input-date");
+		selectPriority.classList.add("input-priority");
 
 		// Changes the color based on the priority selected
 		if (this.item.getPriority == "priorityLow") {
@@ -148,4 +144,37 @@ export class Card extends Item {
 
 		return card;
 	}
+
+	// TODO Finish the below method that way you can update the values with the form elements in the expand.
+	renderValues() {
+		cardTitle.textContent = this.item.getTitle;
+		cardDate.textContent = this.item.getDate;
+
+		inputTitle.textContent = this.item.getTitle;
+		inputDate.value = this.item.getDate;
+		descriptionTextArea.value = this.item.getDescription;
+
+		// Renders the priority color
+		if (this.item.getPriority == "priorityLow") {
+			checkboxWrapper.classList.add("priority-low");
+			expandWrapper.classList.add("priority-low");
+			optionPriorityLow.setAttribute("selected", "");
+		}
+		if (this.item.getPriority == "priorityMedium") {
+			checkboxWrapper.classList.add("priority-medium");
+			expandWrapper.classList.add("priority-medium");
+			optionPriorityMedium.setAttribute("selected", "");
+		}
+		if (this.item.getPriority == "priorityHigh") {
+			checkboxWrapper.classList.add("priority-high");
+			expandWrapper.classList.add("priority-high");
+			optionPriorityHigh.setAttribute("selected", "");
+		}
+	}
 }
+// selectPriority.value = this.item.getPriority;
+// cardDescription.textContent = this.item.getDescription;
+// const cardDescription = document.createElement("p");
+// sdoifj
+// selectPriority.setAttribute("id", "priorityDropdown");
+// cardDate.value = cardDate.textContent;

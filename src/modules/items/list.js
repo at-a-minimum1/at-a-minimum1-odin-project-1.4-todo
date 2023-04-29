@@ -9,7 +9,6 @@ export class List {
 	set setTitle(titleName) {
 		this.title = titleName;
 	}
-
 	get getList() {
 		return this.list;
 	}

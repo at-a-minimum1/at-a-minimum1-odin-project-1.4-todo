@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				domControl.expandCollapse(document.getElementById("sortPanel"));
-				console.log(allTasks.list);
+				// console.log(allTasks.list);
 			},
 		},
 	];
@@ -171,19 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		console.log("test");
 	}
 
-	function printEventTarget(event) {
-		console.log(event.target);
-	}
-
 	const projectWrapper = document.getElementById("projectWrapper");
 	const headerListName = document.getElementById("headerListName");
-
-	// function validateAndAddToList(item) {
-	// 	console.log(headerListName.textContent);
-	// 	if (allArrays.contains(headerListName.textContent)) {
-	// 		allArrays[headerListName.textContent].addToList(item);
-	// 	}
-	// }
 
 	inputWrapper.addEventListener("click", function (event) {
 		if (event.target.matches(".expand-collapse-button")) {
@@ -203,8 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			const btn = event.target;
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
-
-			// Update the results panel to show the tasks in the list selected
 			const taskArray = allArrays[btnText];
 			domControl.clearDOM("resultsPanel");
 			domControl.displayTasks(taskArray);
@@ -214,34 +201,43 @@ document.addEventListener("DOMContentLoaded", () => {
 	resultsPanel.addEventListener("click", function (event) {
 		const card = event.target.closest(".card");
 		const cardID = card.getAttribute("data-id");
-		// const cardObject = allTasks.list.find((task) => task.id === cardID);
-
-		// const itemSelected = card.dataset.item;
 		const itemSelected = allTasks.list.find((item) => item.id === cardID);
+
+		const formTitle = event.target.querySelector(".input-title");
+		const formPriority = event.target.closest(".inputPriority");
+		const formDate = event.target.closest(".input-date");
+		const formDescription = event.target.closest(".description-textarea");
 
 		if (event.target.matches(".expand-button")) {
 			domControl.toggleCard(card);
 		}
 		if (event.target.matches(".save-button")) {
-			console.log("Save button");
+			itemSelected.title = formTitle.textContent;
+			// itemSelected.setDate(formDate);
+			// itemSelected.setPriority(formPriority);
+			// itemSelected.setDescription(formDescription);
+			// card.renderValues();
+			domControl.toggleCard(card);
+			console.log(itemSelected);
+			console.log(typeof formTitle);
 		}
 		if (event.target.matches(".delete-button")) {
 			domControl.removeCard(card);
-			allTasks.removeFromList(itemSelected);
+			removeFromAllLists(itemSelected);
 		}
-
-		// if (event.target.matches(".collapsible-btn")) {
-		// 	domControl.toggleCollapsibleCard(event);
-		// }
-		// if (event.target.matches(".delete")) {
-		// 	const btn = event.target;
-		// 	const card = btn.closest(".collapsible-card");
-		// 	card.remove();
-		// }
-		// if (event.target.matches(".save")) {
-		// 	domControl.toggleCollapsibleCard(event);
-		// }
 	});
+
+	function removeFromAllLists(item) {
+		for (let listName in allArrays) {
+			let listObject = allArrays[listName];
+			for (const listItem of listObject) {
+				if (item.id == listItem.id) {
+					listObject.removeFromList(listItem);
+					break;
+				}
+			}
+		}
+	}
 
 	function getCurrentTaskArray() {
 		const listName = headerListName.textContent;
@@ -273,8 +269,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			array.sort((a, b) => {
 				const aVal = priorityValues[a.priority];
 				const bVal = priorityValues[b.priority];
-				// console.log(a.priority);
-
 				return bVal - aVal;
 			});
 		}
@@ -300,8 +294,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // TODO: Implement a feature to expand a single todo to view and edit its details.
-
-// TODO: Add functionality to delete a todo.
 
 // TODO: Install and import the date-fns library to use its helpful functions for formatting and manipulating dates and times.
 

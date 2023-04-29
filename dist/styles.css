@@ -333,8 +333,7 @@ h3 {
 
 .title-wrapper {
 	display: flex;
-	/* flex-wrap: wrap; */
-	/* align-content: center; */
+	margin: 0px 10px 10px 10px;
 }
 
 .date-wrapper {
@@ -359,7 +358,6 @@ h3 {
 .card-title {
 	font-size: 20px;
 	font-weight: bold;
-	margin-bottom: 10px;
 }
 
 .card-date {
@@ -408,6 +406,11 @@ h3 {
 	background-color: inherit;
 	border: solid 2px;
 	cursor: pointer;
+}
+
+.description-textarea {
+	height: 100%;
+	margin-bottom: 10px;
 }
 
 /* Utility classes */

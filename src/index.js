@@ -1,8 +1,10 @@
 import * as domControl from "./modules/dom/domControl";
-import { Card } from "./modules/items/card";
+// import { Card } from "./modules/items/card";
 import { Item } from "./modules/items/item";
 import { List } from "./modules/items/list";
 
+// TODO update the map to hold the values of the project the task is assigned to that way it can be used when displaying the projects and the sorted projects.
+const cardMap = new Map();
 const allTasks = new List([], "All Tasks");
 const today = new List([], "Today");
 const nextWeek = new List([], "Next Week");
@@ -36,10 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				let selectedPriorityValue = priority.value;
 
 				const item = new Item(title, date, description, selectedPriorityValue);
-				const card = new Card(item);
 
 				validateAndAddToList(item);
-				domControl.addCard("resultsPanel", card);
+				domControl.addCard("resultsPanel", item, cardMap);
 			},
 		},
 		{
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 			},
 		},
+		// BUG Sort buttons clear the DOM when they are clicked. Error is located in domControl.displayTasks and domcontrol.addCard
 		// Sort buttons
 		{
 			// Accesses the sort task button
@@ -62,9 +64,14 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
+				console.log(currentArray);
+				console.log(currentArray.list);
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(sortArray(currentArray.list, "title"));
+				domControl.displayTasks(
+					sortArray(currentArray.list, "title"),
+					"resultsPanel"
+				);
 			},
 		},
 
@@ -76,7 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(sortArray(currentArray.list, "date"));
+				domControl.displayTasks(
+					sortArray(currentArray.list, "date"),
+					"resultsPanel"
+				);
 			},
 		},
 
@@ -88,7 +98,10 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(sortArray(currentArray.list, "priority"));
+				domControl.displayTasks(
+					sortArray(currentArray.list, "priority"),
+					"resultsPanel"
+				);
 			},
 		},
 
@@ -158,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				domControl.expandCollapse(document.getElementById("sortPanel"));
-				// console.log(allTasks.list);
 			},
 		},
 	];
@@ -169,6 +181,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	function printTest() {
 		console.log("test");
+	}
+	function printEventTarget(event) {
+		console.log(event.target);
 	}
 
 	const projectWrapper = document.getElementById("projectWrapper");
@@ -185,6 +200,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				btn.textContent = "-";
 			}
 		}
+		// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
+
 		if (
 			event.target.matches(".list-button") ||
 			event.target.matches(".category-button")
@@ -194,36 +211,54 @@ document.addEventListener("DOMContentLoaded", () => {
 			headerListName.textContent = btnText;
 			const taskArray = allArrays[btnText];
 			domControl.clearDOM("resultsPanel");
-			domControl.displayTasks(taskArray);
+			// BUG tasks are displayed but don't reference the item anymore.
+			domControl.displayTasks(taskArray, "resultsPanel");
 		}
 	});
 
 	resultsPanel.addEventListener("click", function (event) {
-		const card = event.target.closest(".card");
-		const cardID = card.getAttribute("data-id");
+		const cardHtml = event.target.closest(".card");
+		const cardID = cardHtml.getAttribute("data-id");
+		const cardPriority = cardHtml.querySelector(".input-priority");
+		const options = cardPriority.querySelectorAll("option");
+
+		const cardObj = cardMap.get(cardHtml).card;
+		const itemObj = cardMap.get(cardHtml).item;
+
 		const itemSelected = allTasks.list.find((item) => item.id === cardID);
 
-		const formTitle = event.target.querySelector(".input-title");
-		const formPriority = event.target.closest(".inputPriority");
-		const formDate = event.target.closest(".input-date");
-		const formDescription = event.target.closest(".description-textarea");
-
 		if (event.target.matches(".expand-button")) {
-			domControl.toggleCard(card);
+			domControl.toggleCard(cardHtml);
 		}
+
 		if (event.target.matches(".save-button")) {
-			itemSelected.title = formTitle.textContent;
-			// itemSelected.setDate(formDate);
-			// itemSelected.setPriority(formPriority);
-			// itemSelected.setDescription(formDescription);
-			// card.renderValues();
-			domControl.toggleCard(card);
-			console.log(itemSelected);
-			console.log(typeof formTitle);
+			const inputTitle = cardHtml.querySelector(".input-title");
+			const title = inputTitle.value;
+			itemObj.title = inputTitle.value;
+			cardObj.renderValues(cardHtml);
+			itemSelected.setPriority(formPriority);
+			domControl.toggleCard(cardHtml);
+			// console.log(cardObj + " and " + itemObj.title);
+
+			// for (const option of options) {
+			// 	if (option.value === selectedValue) {
+			// 		option.selected = true;
+			// 	} else {
+			// 		option.selected = false;
+			// 	}
+			// }
 		}
+
 		if (event.target.matches(".delete-button")) {
-			domControl.removeCard(card);
+			domControl.removeCard(cardHtml);
+			cardMap.delete(cardHtml);
 			removeFromAllLists(itemSelected);
+		}
+
+		if (event.target.matches(".input-priority")) {
+			let inputPriority = event.target;
+			itemObj.priority = inputPriority.value;
+			console.log(itemObj.priority);
 		}
 	});
 
@@ -243,6 +278,8 @@ document.addEventListener("DOMContentLoaded", () => {
 		const listName = headerListName.textContent;
 		return allArrays[listName];
 	}
+
+	// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
 
 	function sortArray(array, sortBy) {
 		const priorityValues = {

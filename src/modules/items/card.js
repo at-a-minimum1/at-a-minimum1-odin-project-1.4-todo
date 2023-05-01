@@ -22,7 +22,7 @@ export class Card extends Item {
 		const titleWrapper = document.createElement("div");
 		const dateWrapper = document.createElement("div");
 		const expandWrapper = document.createElement("div");
-		const collapsibleForm = document.createElement("div");
+		const collapsibleForm = document.createElement("form");
 		const collapsibleDescription = document.createElement("div");
 		const collapsibleEditButtonWrap = document.createElement("div");
 		// Create elements
@@ -146,30 +146,26 @@ export class Card extends Item {
 	}
 
 	// TODO Finish the below method that way you can update the values with the form elements in the expand.
-	renderValues() {
-		cardTitle.textContent = this.item.getTitle;
-		cardDate.textContent = this.item.getDate;
-
-		inputTitle.textContent = this.item.getTitle;
-		inputDate.value = this.item.getDate;
-		descriptionTextArea.value = this.item.getDescription;
+	// BUG CardTitle isn't being referenced correctly. I doubt the others are too...
+	renderValues(cardHtml) {
+		const checkboxWrapper = cardHtml.querySelector(".checkbox-wrapper");
+		const expandWrapper = cardHtml.querySelector(".expand-wrapper");
 
 		// Renders the priority color
-		if (this.item.getPriority == "priorityLow") {
-			checkboxWrapper.classList.add("priority-low");
-			expandWrapper.classList.add("priority-low");
-			optionPriorityLow.setAttribute("selected", "");
-		}
-		if (this.item.getPriority == "priorityMedium") {
-			checkboxWrapper.classList.add("priority-medium");
-			expandWrapper.classList.add("priority-medium");
-			optionPriorityMedium.setAttribute("selected", "");
-		}
-		if (this.item.getPriority == "priorityHigh") {
-			checkboxWrapper.classList.add("priority-high");
-			expandWrapper.classList.add("priority-high");
-			optionPriorityHigh.setAttribute("selected", "");
-		}
+		checkboxWrapper.classList.forEach((className) => {
+			if (className.startsWith("priority")) {
+				checkboxWrapper.classList.remove(className);
+				expandWrapper.classList.remove(className);
+			}
+		});
+		const itemPriority = this.item.getPriority;
+		const priorityClass =
+			"priority-" +
+			itemPriority.charAt(8).toLowerCase() +
+			itemPriority.slice(9);
+
+		checkboxWrapper.classList.add(priorityClass);
+		expandWrapper.classList.add(priorityClass);
 	}
 }
 // selectPriority.value = this.item.getPriority;

@@ -1,9 +1,13 @@
 import { Card } from "../items/card";
 import { List } from "../items/list";
 
-export function addCard(id, card) {
+export function addCard(id, item, map) {
+	const card = new Card(item);
 	const createdCard = card.createCard();
 	const target = document.getElementById(id);
+
+	map.set(createdCard, { item, card });
+
 	target.appendChild(createdCard);
 }
 
@@ -31,12 +35,30 @@ export function clearDOM(id) {
 		panel.firstChild.remove();
 	}
 }
-
-export function displayTasks(taskList) {
+// TODO update this to take the argument of map as the parameter
+// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
+export function displayTasks(taskList, id) {
 	for (const task of taskList) {
-		// Add the task
+		// addCard("resultsPanel", task);
+		const target = document.getElementById(id);
 		const card = new Card(task);
-		addCard("resultsPanel", card);
+		const createdCard = card.createCard();
+		target.appendChild(createdCard);
+	}
+}
+
+// TODO This was ChatGPT's solution. Going to merge this solution with the function above and then ensure the map of values is read. Maybe I need to export the map value out of index.js to other files...
+function displayProjectTasks(project) {
+	const taskContainer = document.getElementById("task-container");
+	taskContainer.innerHTML = "";
+
+	for (const [
+		card,
+		{ item, card: cardObject, project: cardProject },
+	] of cardMap.entries()) {
+		if (cardProject === project) {
+			taskContainer.appendChild(card);
+		}
 	}
 }
 

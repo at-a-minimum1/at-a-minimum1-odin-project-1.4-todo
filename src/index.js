@@ -32,15 +32,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				let title = document.getElementById("title").value;
 				let date = document.getElementById("dueDate").value;
-				// TODO add the ability to add a description when adding a task with a dropdown and then reference it for this variable
 				let description = "Sample Description";
 				let priority = document.getElementById("priorityDropdown");
 				let selectedPriorityValue = priority.value;
 
+				const currentProject = getCurrentTaskArray();
 				const item = new Item(title, date, description, selectedPriorityValue);
 
 				validateAndAddToList(item);
-				domControl.addCard("resultsPanel", item, cardMap);
+				allTasks.list.push(item);
+				domControl.addCard("resultsPanel", item, currentProject, cardMap);
 			},
 		},
 		{
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				}
 			},
 		},
-		// BUG Sort buttons clear the DOM when they are clicked. Error is located in domControl.displayTasks and domcontrol.addCard
+
 		// Sort buttons
 		{
 			// Accesses the sort task button
@@ -64,11 +65,13 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let currentArray = getCurrentTaskArray();
+				// const cardArray = Array.from(cardMap.values());
+				// TODO update the following sorted lists to return the map values and display them as the sorted list in the DOM. Maybe go through the map and reorder them or just go through the map and append them in order. Will consult with ChatGPT to figure out how to do this.
 				console.log(currentArray);
-				console.log(currentArray.list);
-				domControl.clearDOM("resultsPanel");
+				console.log(cardMap.get(currentArray));
+				// domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(
+				domControl.displaySortedList(
 					sortArray(currentArray.list, "title"),
 					"resultsPanel"
 				);
@@ -83,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(
+				domControl.displaySortedList(
 					sortArray(currentArray.list, "date"),
 					"resultsPanel"
 				);
@@ -98,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displayTasks(
+				domControl.displaySortedList(
 					sortArray(currentArray.list, "priority"),
 					"resultsPanel"
 				);
@@ -173,6 +176,40 @@ document.addEventListener("DOMContentLoaded", () => {
 				domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
+		{
+			// Accesses the All Tasks button
+			element: document.getElementById("allTasks"),
+			eventType: "click",
+			callback: () => {
+				domControl.displayAllTasks(cardMap, "All Tasks", "resultsPanel");
+				headerListName.textContent = "All Tasks";
+				// domControl.expandCollapse(document.getElementById("sortPanel"));
+			},
+		},
+		{
+			// Accesses the today button
+			element: document.getElementById("todayTasks"),
+			eventType: "click",
+			callback: () => {
+				// domControl.expandCollapse(document.getElementById("sortPanel"));
+			},
+		},
+		{
+			// Accesses the Newt Week button
+			element: document.getElementById("nextWeekTasks"),
+			eventType: "click",
+			callback: () => {
+				// domControl.expandCollapse(document.getElementById("sortPanel"));
+			},
+		},
+		{
+			// Accesses the Important button
+			element: document.getElementById("importantTasks"),
+			eventType: "click",
+			callback: () => {
+				// domControl.expandCollapse(document.getElementById("sortPanel"));
+			},
+		},
 	];
 
 	elements.forEach(({ element, eventType, callback }) => {
@@ -200,19 +237,17 @@ document.addEventListener("DOMContentLoaded", () => {
 				btn.textContent = "-";
 			}
 		}
-		// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
 
 		if (
-			event.target.matches(".list-button") ||
-			event.target.matches(".category-button")
+			event.target.matches(".list-button")
+			// event.target.matches(".category-button")
 		) {
 			const btn = event.target;
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
 			const taskArray = allArrays[btnText];
 			domControl.clearDOM("resultsPanel");
-			// BUG tasks are displayed but don't reference the item anymore.
-			domControl.displayTasks(taskArray, "resultsPanel");
+			domControl.displayTasks(taskArray, "resultsPanel", cardMap);
 		}
 	});
 
@@ -238,15 +273,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			cardObj.renderValues(cardHtml);
 			itemSelected.setPriority(formPriority);
 			domControl.toggleCard(cardHtml);
-			// console.log(cardObj + " and " + itemObj.title);
-
-			// for (const option of options) {
-			// 	if (option.value === selectedValue) {
-			// 		option.selected = true;
-			// 	} else {
-			// 		option.selected = false;
-			// 	}
-			// }
 		}
 
 		if (event.target.matches(".delete-button")) {
@@ -273,13 +299,63 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		}
 	}
+	// BUG the Sort buttons need to return the sorted map. It's not adding the sorted map back into the DOM
+	// BUG This isn't returning a collection of objects associated with the card map values. Need to refactor to ensure it does and then fix the rest of the sort buttons in order to get the properly sorted interactive items to display.
+	// TODO Or you could just iterate through the map values and display all the map values that are associated with the project they're assigned to
+	// function getCurrentTaskArray() {
+	// 	const listName = headerListName.textContent;
+	// 	return allArrays[listName];
+	// }
 
 	function getCurrentTaskArray() {
 		const listName = headerListName.textContent;
-		return allArrays[listName];
+		return cardMap.get(listName);
 	}
 
-	// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
+	// function getCurrentTaskArray() {
+	// 	const listName = headerListName.textContent;
+	// 	const projectTasks = [];
+
+	// 	for (const [card, { item, createdCard, project }] of cardMap) {
+	// 		if (project === listName) {
+	// 			projectTasks.push({ item, createdCard });
+	// 		}
+	// 	}
+
+	// 	return projectTasks;
+	// }
+
+	// function sortMapArray(map, sortBy) {
+	// 	const cardArray = Array.from(cardMap.values());
+	// 	const priorityValues = {
+	// 		priorityHigh: 3,
+	// 		priorityMedium: 2,
+	// 		priorityLow: 1,
+	// 	};
+
+	// 	if (sortBy === "title") {
+	// 		cardArray.sort((a, b) => {
+	// 			if (a.title < b.title) {
+	// 				return -1;
+	// 			}
+	// 			if (a.title > b.title) {
+	// 				return 1;
+	// 			}
+	// 			return 0;
+	// 		});
+	// 	}
+	// 	if (sortBy === "date") {
+	// 		cardArray.sort((a, b) => b.date.localeCompare(a.date));
+	// 	}
+	// 	if (sortBy === "priority") {
+	// 		cardArray.sort((a, b) => {
+	// 			const aVal = priorityValues[a.priority];
+	// 			const bVal = priorityValues[b.priority];
+	// 			return bVal - aVal;
+	// 		});
+	// 	}
+	// 	return cardArray;
+	// }
 
 	function sortArray(array, sortBy) {
 		const priorityValues = {

@@ -1,12 +1,12 @@
 import { Card } from "../items/card";
 import { List } from "../items/list";
 
-export function addCard(id, item, map) {
+export function addCard(id, item, project, map) {
 	const card = new Card(item);
 	const createdCard = card.createCard();
 	const target = document.getElementById(id);
 
-	map.set(createdCard, { item, card });
+	map.set(createdCard, { item, card, project });
 
 	target.appendChild(createdCard);
 }
@@ -37,27 +37,70 @@ export function clearDOM(id) {
 }
 // TODO update this to take the argument of map as the parameter
 // BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
-export function displayTasks(taskList, id) {
-	for (const task of taskList) {
-		// addCard("resultsPanel", task);
-		const target = document.getElementById(id);
-		const card = new Card(task);
-		const createdCard = card.createCard();
-		target.appendChild(createdCard);
+export function displayTasks(taskList, id, cardMap) {
+	const target = document.getElementById(id);
+
+	for (const [
+		cardHtml,
+		{ item, card: cardObject, project: cardProject },
+	] of cardMap.entries()) {
+		if (cardProject == taskList) {
+			target.appendChild(cardHtml);
+		}
 	}
 }
 
-// TODO This was ChatGPT's solution. Going to merge this solution with the function above and then ensure the map of values is read. Maybe I need to export the map value out of index.js to other files...
-function displayProjectTasks(project) {
-	const taskContainer = document.getElementById("task-container");
-	taskContainer.innerHTML = "";
+// export function displaySortedList(taskList, id) {
+// 	clearDOM(id);
+// 	const target = document.getElementById(id);
+// 	for (const task of taskList) {
+// 		// addCard("resultsPanel", task);
+// 		const card = new Card(task);
+// 		const createdCard = card.createCard();
+// 		target.appendChild(createdCard);
+// 	}
+// }
 
-	for (const [
-		card,
-		{ item, card: cardObject, project: cardProject },
-	] of cardMap.entries()) {
-		if (cardProject === project) {
-			taskContainer.appendChild(card);
+// TODO This was ChatGPT's solution. Going to merge this solution with the function above and then ensure the map of values is read. Maybe I need to export the map value out of index.js to other files...
+export function displayAllTasks(cardMap, sort, id) {
+	const target = document.getElementById(id);
+	if (sort == "All Tasks") {
+		console.log(sort + " " + cardMap.entries());
+		for (const [
+			cardHtml,
+			{ item, card: cardObject, project: cardProject },
+		] of cardMap.entries()) {
+			target.appendChild(cardHtml);
+		}
+	}
+	if (sort == "Today") {
+		{
+			for (const [
+				card,
+				{ item, card: cardObject, project: cardProject },
+			] of cardMap.entries()) {
+				target.appendChild(card);
+			}
+		}
+	}
+	if (sort == "Next Week") {
+		{
+			for (const [
+				card,
+				{ item, card: cardObject, project: cardProject },
+			] of cardMap.entries()) {
+				target.appendChild(card);
+			}
+		}
+	}
+	if (sort == "important") {
+		{
+			for (const [
+				card,
+				{ item, card: cardObject, project: cardProject },
+			] of cardMap.entries()) {
+				target.appendChild(card);
+			}
 		}
 	}
 }

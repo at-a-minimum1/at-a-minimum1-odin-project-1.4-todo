@@ -1,23 +1,17 @@
 import { Card } from "../items/card";
 import { List } from "../items/list";
 
-export function addCard(id, item, project, map) {
-	const card = new Card(item);
-	const createdCard = card.createCard();
+export function addCard(id, cardHtml) {
 	const target = document.getElementById(id);
-
-	map.set(createdCard, { item, card, project });
-
-	target.appendChild(createdCard);
+	target.appendChild(cardHtml);
 }
 
-export function addProject(list) {
-	const project = list;
+export function addProject(projectName) {
 	const listButton = document.createElement("button");
 	const projectWrapper = document.getElementById("projectPanel");
 	const listContainer = document.createElement("div");
 
-	listButton.textContent = project.title;
+	listButton.textContent = projectName;
 	listButton.classList.add("list-button");
 
 	listContainer.appendChild(listButton);
@@ -37,31 +31,20 @@ export function clearDOM(id) {
 }
 // TODO update this to take the argument of map as the parameter
 // BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
-export function displayTasks(taskList, id, cardMap) {
+//BUG Refactor the following to just display the array? Maybe I dunno
+export function displayTasks(id, projectArray) {
 	const target = document.getElementById(id);
-
-	for (const [
-		cardHtml,
-		{ item, card: cardObject, project: cardProject },
-	] of cardMap.entries()) {
-		if (cardProject == taskList) {
-			target.appendChild(cardHtml);
-		}
-	}
+	projectArray.forEach((task) => {
+		target.appendChild(task);
+	});
+	// for (const [
+	// 	project,
+	// 	{ item: itemObject, card: cardObject, cardHtml: cardHtmlObject },
+	// ] of cardMap.entries()) {
+	// 	target.appendChild(cardHtmlObject);
+	// }
 }
 
-// export function displaySortedList(taskList, id) {
-// 	clearDOM(id);
-// 	const target = document.getElementById(id);
-// 	for (const task of taskList) {
-// 		// addCard("resultsPanel", task);
-// 		const card = new Card(task);
-// 		const createdCard = card.createCard();
-// 		target.appendChild(createdCard);
-// 	}
-// }
-
-// TODO This was ChatGPT's solution. Going to merge this solution with the function above and then ensure the map of values is read. Maybe I need to export the map value out of index.js to other files...
 export function displayAllTasks(cardMap, sort, id) {
 	const target = document.getElementById(id);
 	if (sort == "All Tasks") {
@@ -140,6 +123,26 @@ export function toggleCard(card) {
 	}
 }
 
-
 // TODO: Replace all uses of allArrays with cardMap.
 // TODO: Remove allArrays import statement.
+
+// export function addCard(id, item, project, map) {
+// 	const card = new Card(item);
+// 	const createdCard = card.createCard();
+// 	const target = document.getElementById(id);
+
+// 	map.set(createdCard, { item, card, project });
+
+// 	target.appendChild(createdCard);
+// }
+
+// export function displaySortedList(taskList, id) {
+// 	clearDOM(id);
+// 	const target = document.getElementById(id);
+// 	for (const task of taskList) {
+// 		// addCard("resultsPanel", task);
+// 		const card = new Card(task);
+// 		const createdCard = card.createCard();
+// 		target.appendChild(createdCard);
+// 	}
+// }

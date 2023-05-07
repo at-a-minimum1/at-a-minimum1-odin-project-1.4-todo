@@ -1,6 +1,6 @@
 import * as domControl from "./modules/dom/domControl";
 import { Item } from "./modules/items/item";
-import { Card } from "./modules/items/card";
+import { Card } from "./module/items/card";
 
 // TODO update the map to hold the values of the project the task is assigned to that way it can be used when displaying the projects and the sorted projects.
 const cardMap = new Map();
@@ -52,9 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
 				const newCardHtml = newCard.createCard();
 				console.log(currentProject + newItem);
 				allTasks.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
-				// cardMap
-				// 	.get(currentProject)
-				// 	.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
+				cardMap
+					.get(currentProject)
+					.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
 				domControl.addCard("resultsPanel", newCardHtml);
 			},
 		},
@@ -254,20 +254,9 @@ document.addEventListener("DOMContentLoaded", () => {
 		const cardID = cardHtml.getAttribute("data-id");
 		const cardPriority = cardHtml.querySelector(".input-priority");
 		const options = cardPriority.querySelectorAll("option");
-		const currentItem = "";
 
-		const currentProject = getCurrentTaskArray();
-		for (const task of currentProject) {
-			if (task.item.id == cardID) {
-				currentItem = task.item;
-				break;
-			}
-		}
-
-		// const cardObj = cardMap.get(cardHtml).card;
-		// const itemObj = cardMap.get(cardHtml).item;
-		// const itemObj = cardMap.get(getCurrentTaskArray).item;
-		// BUG the above methods are throwing errors.
+		const cardObj = cardMap.get(cardHtml).card;
+		const itemObj = cardMap.get(cardHtml).item;
 
 		if (event.target.matches(".expand-button")) {
 			domControl.toggleCard(cardHtml);

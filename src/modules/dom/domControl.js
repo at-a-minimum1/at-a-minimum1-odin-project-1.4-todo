@@ -139,3 +139,7 @@ export function toggleCard(card) {
 		expandButton.textContent = "Expand";
 	}
 }
+
+
+// TODO: Replace all uses of allArrays with cardMap.
+// TODO: Remove allArrays import statement.

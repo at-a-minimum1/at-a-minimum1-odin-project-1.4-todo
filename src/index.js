@@ -10,14 +10,19 @@ const today = new List([], "Today");
 const nextWeek = new List([], "Next Week");
 const important = new List([], "Important");
 
-const allArrays = {
-	"All Tasks": allTasks,
-	Today: today,
-	"Next Week": nextWeek,
-	Important: important,
-	Todo: new List([], "Project Todo"),
-	Odinbook: new List([], "Odinbook"),
-};
+const toDoProject = new List([], "Todo");
+const odinbookProject = new List([], "Odinbook");
+// TODO change the cardMap to either take the project as the key that contains the item, cardObj, and cardHtml or take the task id as the key. I'm leaning towards using the project as the key. So that way I can easily sort and display the tasks. The only issue I'm having is the projects would be empty on load. I think I can create null values, but I'm not sure.
+// BUG Not a bug a bookmark for the todo above. 5/6/23
+
+// const allArrays = {
+// 	"All Tasks": allTasks,
+// 	Today: today,
+// 	"Next Week": nextWeek,
+// 	Important: important,
+// 	Todo: new List([], "Project Todo"),
+// 	Odinbook: new List([], "Odinbook"),
+// };
 
 document.addEventListener("DOMContentLoaded", () => {
 	function addEventListener(element, eventType, callback) {
@@ -39,7 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
 				const currentProject = getCurrentTaskArray();
 				const item = new Item(title, date, description, selectedPriorityValue);
 
-				validateAndAddToList(item);
+				// cardMap.get(currentProject).addToList(item);
+				console.log(currentProject + item);
 				allTasks.list.push(item);
 				domControl.addCard("resultsPanel", item, currentProject, cardMap);
 			},
@@ -50,9 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let title = document.getElementById("projectName").value;
-				if (!Object.keys(allArrays).includes(title)) {
+
+				// if (!Object.keys(allArrays).includes(title)) {
+				// 	const list = new List([], title);
+				// 	allArrays[title] = list;
+				// 	domControl.addProject(list);
+				// }
+
+				if (!cardMap.has(title)) {
 					const list = new List([], title);
-					allArrays[title] = list;
+					cardMap.set(title, list);
 					domControl.addProject(list);
 				}
 			},
@@ -71,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				console.log(cardMap.get(currentArray));
 				// domControl.clearDOM("resultsPanel");
 
-				domControl.displaySortedList(
+				domControl.displayTasks(
 					sortArray(currentArray.list, "title"),
 					"resultsPanel"
 				);
@@ -86,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displaySortedList(
+				domControl.displayTasks(
 					sortArray(currentArray.list, "date"),
 					"resultsPanel"
 				);
@@ -101,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				let currentArray = getCurrentTaskArray();
 				domControl.clearDOM("resultsPanel");
 
-				domControl.displaySortedList(
+				domControl.displayTasks(
 					sortArray(currentArray.list, "priority"),
 					"resultsPanel"
 				);
@@ -245,7 +258,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			const btn = event.target;
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
-			const taskArray = allArrays[btnText];
+
+			const taskArray = cardMap.get(btnText);
+			// TODO Replace the above with cardMap
+
 			domControl.clearDOM("resultsPanel");
 			domControl.displayTasks(taskArray, "resultsPanel", cardMap);
 		}
@@ -291,6 +307,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	function removeFromAllLists(item) {
 		for (let listName in allArrays) {
 			let listObject = allArrays[listName];
+			// TODO Replace the above with cardMap
+
 			for (const listItem of listObject) {
 				if (item.id == listItem.id) {
 					listObject.removeFromList(listItem);
@@ -302,60 +320,12 @@ document.addEventListener("DOMContentLoaded", () => {
 	// BUG the Sort buttons need to return the sorted map. It's not adding the sorted map back into the DOM
 	// BUG This isn't returning a collection of objects associated with the card map values. Need to refactor to ensure it does and then fix the rest of the sort buttons in order to get the properly sorted interactive items to display.
 	// TODO Or you could just iterate through the map values and display all the map values that are associated with the project they're assigned to
-	// function getCurrentTaskArray() {
-	// 	const listName = headerListName.textContent;
-	// 	return allArrays[listName];
-	// }
 
 	function getCurrentTaskArray() {
-		const listName = headerListName.textContent;
+		const listName = headerListName.textContent.trim().toLowerCase();
+		console.log(listName + cardMap.get(listName).list + cardMap);
 		return cardMap.get(listName);
 	}
-
-	// function getCurrentTaskArray() {
-	// 	const listName = headerListName.textContent;
-	// 	const projectTasks = [];
-
-	// 	for (const [card, { item, createdCard, project }] of cardMap) {
-	// 		if (project === listName) {
-	// 			projectTasks.push({ item, createdCard });
-	// 		}
-	// 	}
-
-	// 	return projectTasks;
-	// }
-
-	// function sortMapArray(map, sortBy) {
-	// 	const cardArray = Array.from(cardMap.values());
-	// 	const priorityValues = {
-	// 		priorityHigh: 3,
-	// 		priorityMedium: 2,
-	// 		priorityLow: 1,
-	// 	};
-
-	// 	if (sortBy === "title") {
-	// 		cardArray.sort((a, b) => {
-	// 			if (a.title < b.title) {
-	// 				return -1;
-	// 			}
-	// 			if (a.title > b.title) {
-	// 				return 1;
-	// 			}
-	// 			return 0;
-	// 		});
-	// 	}
-	// 	if (sortBy === "date") {
-	// 		cardArray.sort((a, b) => b.date.localeCompare(a.date));
-	// 	}
-	// 	if (sortBy === "priority") {
-	// 		cardArray.sort((a, b) => {
-	// 			const aVal = priorityValues[a.priority];
-	// 			const bVal = priorityValues[b.priority];
-	// 			return bVal - aVal;
-	// 		});
-	// 	}
-	// 	return cardArray;
-	// }
 
 	function sortArray(array, sortBy) {
 		const priorityValues = {
@@ -388,22 +358,25 @@ document.addEventListener("DOMContentLoaded", () => {
 		return array;
 	}
 
-	function validateAndAddToList(item) {
-		const headerName = headerListName.textContent.trim();
-		if (!headerName) {
-			console.error("Header name is empty");
-			return;
-		}
-		if (!allArrays.hasOwnProperty(headerName)) {
-			console.error(`No list found for header "${headerName}"`);
-			return;
-		}
-		if (headerName != "All Tasks") {
-			allTasks.addToList(item);
-		}
-
-		allArrays[headerName].addToList(item);
-	}
+	// function validateAndAddToList(item) {
+	// 	const headerName = headerListName.textContent.trim();
+	// 	// const headerName = getCurrentTaskArray();
+	// 	if (!headerName) {
+	// 		console.error("Header name is empty");
+	// 		return;
+	// 	}
+	// 	if (!cardMap.has(headerName)) {
+	// 		console.error(`No list found for header "${headerName}"`);
+	// 		return;
+	// 	}
+	// 	if (headerName != "All Tasks") {
+	// 		// allTasks.addToList(item);
+	// 		cardMap.set(item);
+	// 	}
+	// 	cardMap.set(item);
+	// 	// allArrays[headerName].addToList(item);
+	// 	// TODO Replace the above with cardMap
+	// }
 });
 
 // TODO: Implement a feature to expand a single todo to view and edit its details.
@@ -419,3 +392,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // TODO: Handle cases where the data is not present in localStorage without crashing the app.
 
 // TODO: Be mindful of the JSON format used by localStorage, and handle storing and retrieving methods in object properties.
+
+// TODO: Replace all uses of allArrays with cardMap.
+// TODO: Remove allArrays declaration.
+// TODO: Update createList() function to add the new list to cardMap instead of allArrays.
+// TODO: Update createProject() function to add the new project to cardMap instead of allArrays.
+// TODO: Update deleteList() function to remove the list from cardMap instead of allArrays.
+// TODO: Update deleteProject() function to remove the project from cardMap instead of allArrays.
+// TODO: Update updateList() function to update the list in cardMap instead of allArrays.
+// TODO: Update updateProject() function to update the project in cardMap instead of allArrays.

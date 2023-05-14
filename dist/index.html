@@ -27,8 +27,9 @@
 						<option value="priorityMedium" selected>Normal</option>
 						<option value="priorityLow">Low</option>
 					</select>
+					<script>let inputDate = new Date();</script>
 					<label for="dueDate">Due Date</label>
-					<input type="date" id="dueDate" value="2050-07-02"></input>
+					<input type="date" id="dueDate" value=`${inputDate}`></input>
 
 					<button id="addTaskModal">+ Add Task</button>
 				</div>
@@ -75,7 +76,9 @@
 					<h3>Projects</h3>
 					<div class="project_wrapper" id="projectWrapper">
 						<div class="project-panel" id="projectPanel">
-
+							<div class="list-container">
+								<button class="list-button">Inbox</button>
+							</div>
 							<div class="list-container">
 								<button class="list-button">Todo</button>
 							</div>

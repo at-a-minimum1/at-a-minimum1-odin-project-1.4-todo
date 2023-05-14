@@ -1,4 +1,5 @@
 import { Item } from "./item";
+import { format } from "date-fns";
 
 export class Card extends Item {
 	constructor(item) {
@@ -59,7 +60,7 @@ export class Card extends Item {
 
 		// Set text content
 		cardTitle.textContent = this.item.getTitle;
-		cardDate.textContent = this.item.getDate;
+		cardDate.textContent = format(this.item.getDate, "MM/dd/yyyy");
 		inputDate.value = this.item.getDate;
 		descriptionTextArea.value = this.item.getDescription;
 		expandButton.textContent = "Expand";
@@ -158,7 +159,7 @@ export class Card extends Item {
 				expandWrapper.classList.remove(className);
 			}
 		});
-		const itemPriority = this.item.getPriority;
+		const itemPriority = this.item.priority;
 		const priorityClass =
 			"priority-" +
 			itemPriority.charAt(8).toLowerCase() +

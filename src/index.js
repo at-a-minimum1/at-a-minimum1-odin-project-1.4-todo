@@ -1,13 +1,15 @@
 import * as domControl from "./modules/dom/domControl";
 import { Item } from "./modules/items/item";
 import { Card } from "./modules/items/card";
+import { format, parseISO, isToday, isThisWeek, addMinutes } from "date-fns";
 
-// TODO update the map to hold the values of the project the task is assigned to that way it can be used when displaying the projects and the sorted projects.
+// TODO add the inbox array and then store any value that isn't in a project already into inbox.
 const cardMap = new Map();
 const allTasks = [];
 const today = [];
 const nextWeek = [];
 const important = [];
+const inbox = [];
 const odinbook = [];
 const todo = [];
 
@@ -15,6 +17,7 @@ cardMap.set("All Tasks", allTasks);
 cardMap.set("Today", today);
 cardMap.set("Next Week", nextWeek);
 cardMap.set("Important", important);
+cardMap.set("Inbox", inbox);
 cardMap.set("Odinbook", odinbook);
 cardMap.set("Todo", todo);
 
@@ -36,10 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let title = document.getElementById("title").value;
-				let date = document.getElementById("dueDate").value;
+				const dateString = document.getElementById("dueDate").value;
+				const date = addMinutes(
+					parseISO(dateString),
+					new Date().getTimezoneOffset()
+				);
+
 				let description = "Sample Description";
 				let priority = document.getElementById("priorityDropdown");
 				let selectedPriorityValue = priority.value;
+				const currentDate = new Date();
 
 				const currentProject = getCurrentTaskArray();
 				const newItem = new Item(
@@ -50,11 +59,54 @@ document.addEventListener("DOMContentLoaded", () => {
 				);
 				const newCard = new Card(newItem);
 				const newCardHtml = newCard.createCard();
-				console.log(currentProject + newItem);
+				const itemDate = new Date(newItem.date);
+
 				allTasks.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
-				// cardMap
-				// 	.get(currentProject)
-				// 	.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
+				if (currentProject == allTasks) {
+					inbox.push({
+						item: newItem,
+						card: newCard,
+						cardHtml: newCardHtml,
+					});
+				}
+
+				if (currentProject != allTasks) {
+					if (
+						currentProject == nextWeek ||
+						currentProject == important ||
+						currentProject == today
+					) {
+						inbox.push({
+							item: newItem,
+							card: newCard,
+							cardHtml: newCardHtml,
+						});
+					} else {
+						currentProject.push({
+							item: newItem,
+							card: newCard,
+							cardHtml: newCardHtml,
+						});
+					}
+				}
+				if (isToday(itemDate)) {
+					today.push({
+						item: newItem,
+						card: newCard,
+						cardHtml: newCardHtml,
+					});
+				}
+				if (newItem.getPriority == "priorityHigh") {
+					important.push({
+						item: newItem,
+						card: newCard,
+						cardHtml: newCardHtml,
+					});
+				}
+
+				const itemDateUTC = new Date(itemDate.getUTCDate());
+				const currentDateUTC = new Date(currentDate.getUTCDate());
+
 				domControl.addCard("resultsPanel", newCardHtml);
 			},
 		},
@@ -81,7 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				const currentArray = getCurrentTaskArray();
 				const sortedArray = sortArray(currentArray, "task");
-
+				console.log(`Sorted array: ${sortedArray}`);
+				console.log(`Unsorted array: ${currentArray}`);
 				domControl.clearDOM("resultsPanel");
 				domControl.displayTasks(sortedArray);
 			},
@@ -128,6 +181,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("addTask"),
 			eventType: "click",
 			callback: () => {
+				document.getElementById("dueDate").valueAsDate = new Date();
+				// date.value = new Date();
 				domControl.expandCollapse(document.getElementById("modalWrapperTask"));
 			},
 		},
@@ -187,6 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				domControl.displayTasks("resultsPanel", allTasks);
+				headerListName.textContent = "All Tasks";
 				// domControl.displayAllTasks(cardMap, "All Tasks", "resultsPanel");
 				// headerListName.textContent = "All Tasks";
 				// domControl.expandCollapse(document.getElementById("sortPanel"));
@@ -197,6 +253,9 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("todayTasks"),
 			eventType: "click",
 			callback: () => {
+				domControl.displayTasks("resultsPanel", today);
+				console.log(today);
+				// TODO Get the array to display all the tasks due today
 				// domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
@@ -222,7 +281,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		addEventListener(element, eventType, callback);
 	});
 
-	const projectWrapper = document.getElementById("projectWrapper");
 	const headerListName = document.getElementById("headerListName");
 
 	inputWrapper.addEventListener("click", function (event) {
@@ -242,10 +300,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
 
-			const taskArray = cardMap.get(btnText);
-
+			// console.log(getCurrentTaskArray());
+			// console.log(cardMap.values());
 			domControl.clearDOM("resultsPanel");
-			domControl.displayTasks("resultsPanel", taskArray);
+			domControl.displayTasks("resultsPanel", getCurrentTaskArray());
 		}
 	});
 
@@ -254,9 +312,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		const cardID = cardHtml.getAttribute("data-id");
 		const cardPriority = cardHtml.querySelector(".input-priority");
 		const options = cardPriority.querySelectorAll("option");
-		const currentItem = "";
 
+		let currentItem;
 		const currentProject = getCurrentTaskArray();
+
 		for (const task of currentProject) {
 			if (task.item.id == cardID) {
 				currentItem = task.item;
@@ -264,40 +323,55 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 		}
 
-		// const cardObj = cardMap.get(cardHtml).card;
-		// const itemObj = cardMap.get(cardHtml).item;
-		// const itemObj = cardMap.get(getCurrentTaskArray).item;
-		// BUG the above methods are throwing errors.
-
 		if (event.target.matches(".expand-button")) {
 			domControl.toggleCard(cardHtml);
 		}
 
 		if (event.target.matches(".save-button")) {
 			const inputTitle = cardHtml.querySelector(".input-title");
+			const inputDate = cardHtml.querySelector(".input-date");
 			const title = inputTitle.value;
-			itemObj.title = inputTitle.value;
-			cardObj.renderValues(cardHtml);
-			itemSelected.setPriority(formPriority);
+			currentItem.title = inputTitle.value;
+			currentItem.date = inputDate.value;
+			domControl.renderCard(cardHtml, currentItem);
 			domControl.toggleCard(cardHtml);
 		}
 
 		if (event.target.matches(".delete-button")) {
 			domControl.removeCard(cardHtml);
-			cardMap.delete(cardHtml);
-			removeFromAllLists(itemSelected);
+			let index = currentProject.indexOf(currentItem);
+			if (index != -1) {
+				currentProject.splice(index, 1);
+				if (currentProject != allTasks) {
+					index = allTasks.indexOf(currentItem);
+					allTasks.splice(index, 1);
+				}
+			}
 		}
 
 		if (event.target.matches(".input-priority")) {
 			let inputPriority = event.target;
-			itemObj.priority = inputPriority.value;
-			console.log(itemObj.priority);
+			currentItem.priority = inputPriority.value;
 		}
 	});
 
 	function getCurrentTaskArray() {
-		const listName = headerListName.textContent.trim().toLowerCase();
+		let listName = headerListName.textContent.trim();
+
 		return cardMap.get(listName);
+	}
+
+	// TODO Finish reassign tasks to take the item as the argument and when the save button is clicked it will reassign the tasks depending if it's next week, today, or important. Might improve the following to also handle putting the items into different projects.
+	function reassignTasks(item) {
+		// Reassigns the tasks to today if it is today
+		if (isToday(item.date)) {
+		}
+		// Reassigns the tasks to next week if it is next week
+		if (item.date) {
+		}
+		// Reassigns the tasks to important if they have a high priority
+		if (item.priority) {
+		}
 	}
 
 	function sortArray(array, sortBy) {
@@ -308,6 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		};
 
 		if (sortBy === "title") {
+			// array.sort((a, b) => {
 			array.sort((a, b) => {
 				if (a.title < b.title) {
 					return -1;
@@ -331,3 +406,17 @@ document.addEventListener("DOMContentLoaded", () => {
 		return array;
 	}
 });
+
+// TODO: Install and import the date-fns library to use its helpful functions for formatting and manipulating dates and times.
+
+// TODO: Implement persistence for the app by using the Web Storage API.
+
+// TODO: Create a function to save projects and todos to localStorage every time a new project or todo is created.
+
+// TODO: Create a function to load the data from localStorage when the app is first loaded.
+
+// TODO: Handle cases where the data is not present in localStorage without crashing the app.
+
+// TODO: Be mindful of the JSON format used by localStorage, and handle storing and retrieving methods in object properties.
+
+// TODO Fix the sort method to actually sort and display the html card objects in order.

@@ -1,5 +1,33 @@
+// @collapse
 import { Card } from "../items/card";
 import { List } from "../items/list";
+
+export function renderCard(cardHtml, item) {
+	const checkboxWrapper = cardHtml.querySelector(".checkbox-wrapper");
+	const expandWrapper = cardHtml.querySelector(".expand-wrapper");
+	const displayTitle = cardHtml.querySelector(".card-title");
+	const displayDate = cardHtml.querySelector(".card-date");
+	// Renders the values from the input fields to the display values
+	displayTitle.textContent = item.getTitle;
+	displayDate.textContent = item.getDate;
+	console.log(
+		`The date on the display is: ${displayDate.textContent} and the date in the item is: ${item.getDate}`
+	);
+
+	// Renders the priority color
+	checkboxWrapper.classList.forEach((className) => {
+		if (className.startsWith("priority")) {
+			checkboxWrapper.classList.remove(className);
+			expandWrapper.classList.remove(className);
+		}
+	});
+	const itemPriority = item.getPriority;
+	const priorityClass =
+		"priority-" + itemPriority.charAt(8).toLowerCase() + itemPriority.slice(9);
+
+	checkboxWrapper.classList.add(priorityClass);
+	expandWrapper.classList.add(priorityClass);
+}
 
 export function addCard(id, cardHtml) {
 	const target = document.getElementById(id);
@@ -29,20 +57,20 @@ export function clearDOM(id) {
 		panel.firstChild.remove();
 	}
 }
-// TODO update this to take the argument of map as the parameter
+
 // BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
 //BUG Refactor the following to just display the array? Maybe I dunno
 export function displayTasks(id, projectArray) {
+	console.log("Data type of projectArray:", typeof projectArray);
+	if (!Array.isArray(projectArray)) {
+		console.error("Invalid array passed to displayTasks");
+		return;
+	}
+
 	const target = document.getElementById(id);
-	projectArray.forEach((task) => {
-		target.appendChild(task);
+	projectArray.forEach((object) => {
+		target.appendChild(object.cardHtml);
 	});
-	// for (const [
-	// 	project,
-	// 	{ item: itemObject, card: cardObject, cardHtml: cardHtmlObject },
-	// ] of cardMap.entries()) {
-	// 	target.appendChild(cardHtmlObject);
-	// }
 }
 
 export function displayAllTasks(cardMap, sort, id) {

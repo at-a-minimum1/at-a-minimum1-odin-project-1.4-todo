@@ -378,26 +378,3 @@ document.addEventListener("DOMContentLoaded", () => {
 	// 	// TODO Replace the above with cardMap
 	// }
 });
-
-// TODO: Implement a feature to expand a single todo to view and edit its details.
-
-// TODO: Install and import the date-fns library to use its helpful functions for formatting and manipulating dates and times.
-
-// TODO: Implement persistence for the app by using the Web Storage API.
-
-// TODO: Create a function to save projects and todos to localStorage every time a new project or todo is created.
-
-// TODO: Create a function to load the data from localStorage when the app is first loaded.
-
-// TODO: Handle cases where the data is not present in localStorage without crashing the app.
-
-// TODO: Be mindful of the JSON format used by localStorage, and handle storing and retrieving methods in object properties.
-
-// TODO: Replace all uses of allArrays with cardMap.
-// TODO: Remove allArrays declaration.
-// TODO: Update createList() function to add the new list to cardMap instead of allArrays.
-// TODO: Update createProject() function to add the new project to cardMap instead of allArrays.
-// TODO: Update deleteList() function to remove the list from cardMap instead of allArrays.
-// TODO: Update deleteProject() function to remove the project from cardMap instead of allArrays.
-// TODO: Update updateList() function to update the list in cardMap instead of allArrays.
-// TODO: Update updateProject() function to update the project in cardMap instead of allArrays.

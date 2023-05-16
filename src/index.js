@@ -3,7 +3,6 @@ import { Item } from "./modules/items/item";
 import { Card } from "./modules/items/card";
 import { format, parseISO, isToday, isThisWeek, addMinutes } from "date-fns";
 
-// TODO add the inbox array and then store any value that isn't in a project already into inbox.
 const cardMap = new Map();
 const allTasks = [];
 const today = [];
@@ -20,12 +19,6 @@ cardMap.set("Important", important);
 cardMap.set("Inbox", inbox);
 cardMap.set("Odinbook", odinbook);
 cardMap.set("Todo", todo);
-
-// TODO Look at the following example for reference.
-// allTasks.push({{ item: anotherItem, card: anotherCard, cardHtml: anotherCardHtml }});
-// cardMap
-// 	.get("All Tasks")
-// 	.push({ item: anotherItem, card: anotherCard, cardHtml: anotherCardHtml });
 
 document.addEventListener("DOMContentLoaded", () => {
 	function addEventListener(element, eventType, callback) {
@@ -132,11 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				const currentArray = getCurrentTaskArray();
-				const sortedArray = sortArray(currentArray, "task");
-				console.log(`Sorted array: ${sortedArray}`);
-				console.log(`Unsorted array: ${currentArray}`);
+				const sortedArray = sortArray(currentArray, "title");
+
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks(sortedArray);
+				domControl.displayTasks("resultsPanel", sortedArray);
 			},
 		},
 
@@ -149,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const sortedArray = sortArray(currentArray, "date");
 
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks(sortedArray);
+				domControl.displayTasks("resultsPanel", sortedArray);
 			},
 		},
 
@@ -162,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const sortedArray = sortArray(currentArray, "priority");
 
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks(sortedArray);
+				domControl.displayTasks("resultsPanel", sortedArray);
 			},
 		},
 
@@ -182,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				document.getElementById("dueDate").valueAsDate = new Date();
-				// date.value = new Date();
 				domControl.expandCollapse(document.getElementById("modalWrapperTask"));
 			},
 		},
@@ -243,9 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			callback: () => {
 				domControl.displayTasks("resultsPanel", allTasks);
 				headerListName.textContent = "All Tasks";
-				// domControl.displayAllTasks(cardMap, "All Tasks", "resultsPanel");
-				// headerListName.textContent = "All Tasks";
-				// domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
 		{
@@ -254,9 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				domControl.displayTasks("resultsPanel", today);
-				console.log(today);
-				// TODO Get the array to display all the tasks due today
-				// domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
 		{
@@ -264,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("nextWeekTasks"),
 			eventType: "click",
 			callback: () => {
+				domControl.displayTasks("resultsPanel", nextWeek);
 				// domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
@@ -272,6 +258,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("importantTasks"),
 			eventType: "click",
 			callback: () => {
+				domControl.displayTasks("resultsPanel", important);
+
 				// domControl.expandCollapse(document.getElementById("sortPanel"));
 			},
 		},
@@ -365,6 +353,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	function reassignTasks(item) {
 		// Reassigns the tasks to today if it is today
 		if (isToday(item.date)) {
+			// today.push();
 		}
 		// Reassigns the tasks to next week if it is next week
 		if (item.date) {
@@ -382,32 +371,30 @@ document.addEventListener("DOMContentLoaded", () => {
 		};
 
 		if (sortBy === "title") {
-			// array.sort((a, b) => {
 			array.sort((a, b) => {
-				if (a.title < b.title) {
+				if (a.item.title < b.item.title) {
 					return -1;
 				}
-				if (a.title > b.title) {
+				if (a.item.title > b.item.title) {
 					return 1;
 				}
 				return 0;
 			});
 		}
 		if (sortBy === "date") {
-			array.sort((a, b) => b.date.localeCompare(a.date));
+			array.sort((a, b) => b.item.date.localeCompare(a.item.date));
 		}
 		if (sortBy === "priority") {
 			array.sort((a, b) => {
-				const aVal = priorityValues[a.priority];
-				const bVal = priorityValues[b.priority];
+				const aVal = priorityValues[a.item.priority];
+				const bVal = priorityValues[b.item.priority];
 				return bVal - aVal;
 			});
 		}
+
 		return array;
 	}
 });
-
-// TODO: Install and import the date-fns library to use its helpful functions for formatting and manipulating dates and times.
 
 // TODO: Implement persistence for the app by using the Web Storage API.
 
@@ -418,5 +405,3 @@ document.addEventListener("DOMContentLoaded", () => {
 // TODO: Handle cases where the data is not present in localStorage without crashing the app.
 
 // TODO: Be mindful of the JSON format used by localStorage, and handle storing and retrieving methods in object properties.
-
-// TODO Fix the sort method to actually sort and display the html card objects in order.

@@ -58,15 +58,13 @@ export function clearDOM(id) {
 	}
 }
 
-// BUG Massive bug with the tasks being displayed no longer being connected to the items they reference.
-//BUG Refactor the following to just display the array? Maybe I dunno
 export function displayTasks(id, projectArray) {
-	console.log("Data type of projectArray:", typeof projectArray);
-	if (!Array.isArray(projectArray)) {
-		console.error("Invalid array passed to displayTasks");
-		return;
-	}
-
+	// console.log("Data type of projectArray:", typeof projectArray);
+	// if (!Array.isArray(projectArray)) {
+	// 	console.error("Invalid array passed to displayTasks");
+	// 	// return;
+	// }
+	console.log(`Project array: ${projectArray}`);
 	const target = document.getElementById(id);
 	projectArray.forEach((object) => {
 		target.appendChild(object.cardHtml);
@@ -150,9 +148,6 @@ export function toggleCard(card) {
 		expandButton.textContent = "Expand";
 	}
 }
-
-// TODO: Replace all uses of allArrays with cardMap.
-// TODO: Remove allArrays import statement.
 
 // export function addCard(id, item, project, map) {
 // 	const card = new Card(item);

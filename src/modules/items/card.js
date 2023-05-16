@@ -61,7 +61,7 @@ export class Card extends Item {
 		// Set text content
 		cardTitle.textContent = this.item.getTitle;
 		cardDate.textContent = format(this.item.getDate, "MM/dd/yyyy");
-		inputDate.value = this.item.getDate;
+		inputDate.value = format(this.item.getDate, "MM/dd/yyyy");
 		descriptionTextArea.value = this.item.getDescription;
 		expandButton.textContent = "Expand";
 		// Set text content of hidden elements
@@ -147,7 +147,6 @@ export class Card extends Item {
 	}
 
 	// TODO Finish the below method that way you can update the values with the form elements in the expand.
-	// BUG CardTitle isn't being referenced correctly. I doubt the others are too...
 	renderValues(cardHtml) {
 		const checkboxWrapper = cardHtml.querySelector(".checkbox-wrapper");
 		const expandWrapper = cardHtml.querySelector(".expand-wrapper");

@@ -2,7 +2,7 @@ import * as domControl from "./modules/dom/domControl";
 import { Item } from "./modules/items/item";
 import { Card } from "./modules/items/card";
 import { format, parseISO, isToday, isThisWeek, addMinutes } from "date-fns";
-import {saveData, loadData} from './modules/utils/dataStorage'
+import { saveData, loadData } from "./modules/utils/dataStorage";
 
 const cardMap = new Map();
 const allTasks = [];
@@ -70,6 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
 						currentProject == important ||
 						currentProject == today
 					) {
+						saveData(inbox, {
+							item: newItem,
+							card: newCard,
+							cardHtml: newCardHtml,
+						});
 						inbox.push({
 							item: newItem,
 							card: newCard,
@@ -98,8 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
 					});
 				}
 
-				const itemDateUTC = new Date(itemDate.getUTCDate());
-				const currentDateUTC = new Date(currentDate.getUTCDate());
+				// const itemDateUTC = new Date(itemDate.getUTCDate());
+				// const currentDateUTC = new Date(currentDate.getUTCDate());
+				// TODO add the functions for storing the entire map object to the user.
+				// TODO when the map version of the local storage is complete see if the
 
 				domControl.addCard("resultsPanel", newCardHtml);
 			},
@@ -348,6 +355,11 @@ document.addEventListener("DOMContentLoaded", () => {
 		let listName = headerListName.textContent.trim();
 
 		return cardMap.get(listName);
+	}
+
+	function addTask(project, taskObject) {
+		saveData(project, taskObject);
+		project.push(taskObject);
 	}
 
 	// TODO Finish reassign tasks to take the item as the argument and when the save button is clicked it will reassign the tasks depending if it's next week, today, or important. Might improve the following to also handle putting the items into different projects.

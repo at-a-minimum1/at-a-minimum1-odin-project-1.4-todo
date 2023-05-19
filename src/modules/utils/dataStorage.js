@@ -1,7 +1,7 @@
 export function saveData(key, value) {
 	// Save data implementation here
 	localStorage.setItem(key, value);
-	console.log("Items succesfully saved");
+	console.log("Items successfully saved");
 }
 
 export function loadData(key) {

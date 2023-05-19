@@ -1,6 +1,5 @@
 // @collapse
 import { Card } from "../items/card";
-import { List } from "../items/list";
 
 export function renderCard(cardHtml, item) {
 	const checkboxWrapper = cardHtml.querySelector(".checkbox-wrapper");

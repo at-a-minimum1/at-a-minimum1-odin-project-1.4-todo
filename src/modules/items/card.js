@@ -12,9 +12,6 @@ export class Card extends Item {
 		this.itemId = item.id;
 	}
 
-	// get getItem() {
-	// 	return this.item;
-	// }
 	// Creates a card element
 	createCard() {
 		// Create divs
@@ -146,7 +143,6 @@ export class Card extends Item {
 		return card;
 	}
 
-	// TODO Finish the below method that way you can update the values with the form elements in the expand.
 	renderValues(cardHtml) {
 		const checkboxWrapper = cardHtml.querySelector(".checkbox-wrapper");
 		const expandWrapper = cardHtml.querySelector(".expand-wrapper");
@@ -168,9 +164,3 @@ export class Card extends Item {
 		expandWrapper.classList.add(priorityClass);
 	}
 }
-// selectPriority.value = this.item.getPriority;
-// cardDescription.textContent = this.item.getDescription;
-// const cardDescription = document.createElement("p");
-// sdoifj
-// selectPriority.setAttribute("id", "priorityDropdown");
-// cardDate.value = cardDate.textContent;

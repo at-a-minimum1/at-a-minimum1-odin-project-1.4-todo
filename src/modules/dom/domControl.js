@@ -58,12 +58,6 @@ export function clearDOM(id) {
 }
 
 export function displayTasks(id, projectArray) {
-	// console.log("Data type of projectArray:", typeof projectArray);
-	// if (!Array.isArray(projectArray)) {
-	// 	console.error("Invalid array passed to displayTasks");
-	// 	// return;
-	// }
-	console.log(`Project array: ${projectArray}`);
 	const target = document.getElementById(id);
 	projectArray.forEach((object) => {
 		target.appendChild(object.cardHtml);
@@ -147,24 +141,3 @@ export function toggleCard(card) {
 		expandButton.textContent = "Expand";
 	}
 }
-
-// export function addCard(id, item, project, map) {
-// 	const card = new Card(item);
-// 	const createdCard = card.createCard();
-// 	const target = document.getElementById(id);
-
-// 	map.set(createdCard, { item, card, project });
-
-// 	target.appendChild(createdCard);
-// }
-
-// export function displaySortedList(taskList, id) {
-// 	clearDOM(id);
-// 	const target = document.getElementById(id);
-// 	for (const task of taskList) {
-// 		// addCard("resultsPanel", task);
-// 		const card = new Card(task);
-// 		const createdCard = card.createCard();
-// 		target.appendChild(createdCard);
-// 	}
-// }

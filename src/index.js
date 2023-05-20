@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			eventType: "click",
 			callback: () => {
 				let title = document.getElementById("title").value;
-				const dateString = document.getElementById("dueDate").value;
-				const date = addMinutes(
+				let dateString = document.getElementById("dueDate").value;
+				let date = addMinutes(
 					parseISO(dateString),
 					new Date().getTimezoneOffset()
 				);
@@ -51,17 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
 					description,
 					selectedPriorityValue
 				);
-				const newCard = new Card(newItem);
-				const newCardHtml = newCard.createCard();
-				const itemDate = new Date(newItem.date);
+				const itemDate = new Date(newItem.date); //TODO Figure out why this is here... Do I need an itemDate
 
-				allTasks.push({ item: newItem, card: newCard, cardHtml: newCardHtml });
+				addTask(allTasks, newItem);
 				if (currentProject == allTasks) {
-					inbox.push({
-						item: newItem,
-						card: newCard,
-						cardHtml: newCardHtml,
-					});
+					addTask(inbox, newItem);
 				}
 
 				if (currentProject != allTasks) {
@@ -70,45 +64,19 @@ document.addEventListener("DOMContentLoaded", () => {
 						currentProject == important ||
 						currentProject == today
 					) {
-						saveData(inbox, {
-							item: newItem,
-							card: newCard,
-							cardHtml: newCardHtml,
-						});
-						inbox.push({
-							item: newItem,
-							card: newCard,
-							cardHtml: newCardHtml,
-						});
+						addTask(inbox, newItem);
 					} else {
-						currentProject.push({
-							item: newItem,
-							card: newCard,
-							cardHtml: newCardHtml,
-						});
+						addTask(currentProject, newItem);
 					}
 				}
 				if (isToday(itemDate)) {
-					today.push({
-						item: newItem,
-						card: newCard,
-						cardHtml: newCardHtml,
-					});
+					addTask(today, newItem);
 				}
 				if (newItem.getPriority == "priorityHigh") {
-					important.push({
-						item: newItem,
-						card: newCard,
-						cardHtml: newCardHtml,
-					});
+					addTask(important, newItem);
 				}
 
-				// const itemDateUTC = new Date(itemDate.getUTCDate());
-				// const currentDateUTC = new Date(currentDate.getUTCDate());
-				// TODO add the functions for storing the entire map object to the user.
-				// TODO when the map version of the local storage is complete see if the
-
-				domControl.addCard("resultsPanel", newCardHtml);
+				renderProject(currentProject);
 			},
 		},
 		{
@@ -136,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const sortedArray = sortArray(currentArray, "title");
 
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks("resultsPanel", sortedArray);
+				renderProject(sortedArray);
 			},
 		},
 
@@ -149,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const sortedArray = sortArray(currentArray, "date");
 
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks("resultsPanel", sortedArray);
+				renderProject(sortedArray);
 			},
 		},
 
@@ -162,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				const sortedArray = sortArray(currentArray, "priority");
 
 				domControl.clearDOM("resultsPanel");
-				domControl.displayTasks("resultsPanel", sortedArray);
+				renderProject(sortedArray);
 			},
 		},
 
@@ -240,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("allTasks"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks("resultsPanel", allTasks);
+				renderProject(allTasks);
 				headerListName.textContent = "All Tasks";
 			},
 		},
@@ -249,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("todayTasks"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks("resultsPanel", today);
+				renderProject(today);
 			},
 		},
 		{
@@ -257,8 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("nextWeekTasks"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks("resultsPanel", nextWeek);
-				// domControl.expandCollapse(document.getElementById("sortPanel"));
+				renderProject(nextWeek);
 			},
 		},
 		{
@@ -266,9 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
 			element: document.getElementById("importantTasks"),
 			eventType: "click",
 			callback: () => {
-				domControl.displayTasks("resultsPanel", important);
-
-				// domControl.expandCollapse(document.getElementById("sortPanel"));
+				renderProject(important);
 			},
 		},
 	];
@@ -296,10 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			const btnText = btn.textContent;
 			headerListName.textContent = btnText;
 
-			// console.log(getCurrentTaskArray());
-			// console.log(cardMap.values());
 			domControl.clearDOM("resultsPanel");
-			domControl.displayTasks("resultsPanel", getCurrentTaskArray());
+			renderProject(getCurrentTaskArray());
 		}
 	});
 
@@ -356,24 +319,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		return cardMap.get(listName);
 	}
+	function renderProject(project) {
+		const projectKey = getMapKey(cardMap, project);
+		const projectObj = cardMap.get(projectKey);
 
-	function addTask(project, taskObject) {
-		saveData(project, taskObject);
-		project.push(taskObject);
+		for (const task of projectObj) {
+			domControl.addCard("resultsPanel", task.cardHtml);
+		}
 	}
 
-	// TODO Finish reassign tasks to take the item as the argument and when the save button is clicked it will reassign the tasks depending if it's next week, today, or important. Might improve the following to also handle putting the items into different projects.
-	function reassignTasks(item) {
-		// Reassigns the tasks to today if it is today
-		if (isToday(item.date)) {
-			// today.push();
+	// TODO finish the below method to display all the projects that are saved in the local storage . ChatGPT gave the following solution. Which is wrong, but informative.
+	function renderProjectList() {}
+
+	// function loadProjects() {
+	//   for (let i = 0; i < localStorage.length; i++) {
+	//     const key = localStorage.key(i);
+	//     // Check if the key corresponds to a project
+	//     if (key.startsWith("project_")) {
+	//       const projectData = JSON.parse(localStorage.getItem(key));
+	//       // Process the project data and add it to the DOM
+	//       // ...
+	//     }
+	//   }
+	// }
+
+	function getMapKey(map, array) {
+		for (const [key, value] of map.entries()) {
+			if (value === array) {
+				return key;
+			}
 		}
-		// Reassigns the tasks to next week if it is next week
-		if (item.date) {
-		}
-		// Reassigns the tasks to important if they have a high priority
-		if (item.priority) {
-		}
+		return null; // Array not found in the map
+	}
+
+	function addTask(project, task) {
+		const newCard = new Card(task);
+		const newCardHtml = newCard.createCard();
+		const taskObject = { item: task, card: newCard, cardHtml: newCardHtml };
+		const projectKey = getMapKey(cardMap, project);
+
+		saveData(projectKey, taskObject);
+		project.push(taskObject);
 	}
 
 	function sortArray(array, sortBy) {
@@ -411,10 +397,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // TODO: Implement persistence for the app by using the Web Storage API.
 
-// TODO: Create a function to save projects and todos to localStorage every time a new project or todo is created.
-
 // TODO: Create a function to load the data from localStorage when the app is first loaded.
 
 // TODO: Handle cases where the data is not present in localStorage without crashing the app.
 
-// TODO: Be mindful of the JSON format used by localStorage, and handle storing and retrieving methods in object properties.
+// TODO Finish reassign tasks to take the item as the argument and when the save button is clicked it will reassign the tasks depending if it's next week, today, or important. Might improve the following to also handle putting the items into different projects.
+// function reassignTasks(item) {
+// 	// Reassigns the tasks to today if it is today
+// 	if (isToday(item.date)) {
+// 		// today.push();
+// 	}
+// 	// Reassigns the tasks to next week if it is next week
+// 	if (item.date) {
+// 	}
+// 	// Reassigns the tasks to important if they have a high priority
+// 	if (item.priority) {
+// 	}
+// }

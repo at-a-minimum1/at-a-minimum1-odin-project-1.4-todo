@@ -9,9 +9,10 @@ export function renderCard(cardHtml, item) {
 	// Renders the values from the input fields to the display values
 	displayTitle.textContent = item.getTitle;
 	displayDate.textContent = item.getDate;
-	console.log(
-		`The date on the display is: ${displayDate.textContent} and the date in the item is: ${item.getDate}`
-	);
+	// BUG Date not showing up in the correct format when I edit the value.
+	// console.log(
+	// 	`The date on the display is: ${displayDate.textContent} and the date in the item is: ${item.getDate}`
+	// );
 
 	// Renders the priority color
 	checkboxWrapper.classList.forEach((className) => {

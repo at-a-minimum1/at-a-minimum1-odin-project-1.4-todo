@@ -21,7 +21,39 @@ cardMap.set("Inbox", inbox);
 cardMap.set("Odinbook", odinbook);
 cardMap.set("Todo", todo);
 
+// TODO Finish the below method for loading in the data into the cardMap. I don't think the values are being loaded into cardMap correctly. Still trying to see what values are being loaded into the object.
+window.addEventListener("load", loadProjects);
+function loadProjects() {
+	for (const key in localStorage) {
+		if (!cardMap.has(key)) {
+			cardMap.set(key, loadData(key));
+			// Add the key object pair into the map object
+		} else {
+			// BUG changing loadData. Make sure to change this to avoid bugs
+			const loadedData = loadData(key);
+			cardMap.set(key, loadedData); //= loadedData;
+		}
+		const loggedAllTasks = cardMap.get("All Tasks");
+		console.log(
+			`From local storage: ${typeof loggedAllTasks.item} From cardMap: ${typeof allTasks.item}`
+		);
+	}
+	// TODO After you get the keys from local storage and add the ones that aren't in the map object already, THEN get the values from the local storage adn add them to the projects in the map object.
+	// for (let [key, value] of cardMap) {
+	// 	value = loadData(key);
+	// }
+
+	// Iterate over the local storage object and put them into the DOM
+	// For every key in cardMap get the corresponding key from local storage (if it exists) and then load them into map object.
+	// for(project in ){
+	// domControl.displayTasks("resultsPanel", project);
+	// renderProject(project);
+	// }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+	// Loads the data from local storage and assigns it to the map object.
+
 	function addEventListener(element, eventType, callback) {
 		element.addEventListener(eventType, callback);
 	}
@@ -76,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 					addTask(important, newItem);
 				}
 
+				console.log(cardMap);
 				renderProject(currentProject);
 			},
 		},
@@ -242,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		addEventListener(element, eventType, callback);
 	});
 
-	const headerListName = document.getElementById("headerListName");
+	// const headerListName = document.getElementById("headerListName");
 
 	inputWrapper.addEventListener("click", function (event) {
 		if (event.target.matches(".expand-collapse-button")) {
@@ -356,9 +389,10 @@ document.addEventListener("DOMContentLoaded", () => {
 		const newCard = new Card(task);
 		const newCardHtml = newCard.createCard();
 		const taskObject = { item: task, card: newCard, cardHtml: newCardHtml };
-		const projectKey = getMapKey(cardMap, project);
-
-		saveData(projectKey, taskObject);
+		const projectKey = `project-${getMapKey(cardMap, project)}`;
+		// TODO Changed the commented out line to something different.
+		// saveData(projectKey, taskObject);
+		saveData(projectKey, task);
 		project.push(taskObject);
 	}
 
@@ -380,6 +414,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				return 0;
 			});
 		}
+		// BUG Sort by date bug: Uncaught TypeError: b.item.date.localeCompare is not a function
 		if (sortBy === "date") {
 			array.sort((a, b) => b.item.date.localeCompare(a.item.date));
 		}
